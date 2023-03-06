@@ -1,14 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:masmasgram_ui/assets/strings/image_paths.dart';
+import 'package:masmasgram_ui/features/splash/screens/splash/splash_screen_widget_model.dart';
 
 class SplashLogo extends StatelessWidget {
-  const SplashLogo({super.key});
+  final ISplashScreenWM splashWM;
+  const SplashLogo({super.key, required this.splashWM});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 5.0),
-      child: Image.asset(logoV1Path),
+      child: PageView(
+        controller: splashWM.logoController,
+        children: [
+          Image.asset(logoV2Path),
+          Image.asset(logoV1Path),
+        ],
+      ),
     );
   }
 }
