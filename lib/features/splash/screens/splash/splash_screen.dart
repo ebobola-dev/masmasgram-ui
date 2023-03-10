@@ -37,7 +37,7 @@ class SplashScreen extends ElementaryWidget<SplashScreenWM> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          const SplashTitle(),
+                          SplashTitle(splashWm: wm),
                           Flexible(child: SplashLogo(splashWM: wm)),
                           SplashTabPageSelector(splashWM: wm),
                         ],

@@ -8,15 +8,23 @@ class SplashLogo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 5.0),
-      child: PageView(
-        controller: splashWM.logoController,
-        children: [
-          Image.asset(logoV2Path),
-          Image.asset(logoV1Path),
-        ],
-      ),
+    return AnimatedBuilder(
+      animation: splashWM.startAnimations.logo,
+      builder: (context, _) {
+        return SlideTransition(
+          position: splashWM.startAnimations.logo,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 5.0),
+            child: PageView(
+              controller: splashWM.logoController,
+              children: [
+                Image.asset(logoV2Path),
+                Image.asset(logoV1Path),
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }

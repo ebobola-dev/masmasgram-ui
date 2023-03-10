@@ -4,6 +4,7 @@ import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:masmasgram_ui/assets/strings/animations.dart';
 import 'package:masmasgram_ui/assets/strings/next_button.dart';
+import 'package:masmasgram_ui/features/splash/domian/entity/start_animations.dart';
 import 'package:masmasgram_ui/features/splash/screens/splash/splash_screen.dart';
 import 'package:masmasgram_ui/features/splash/screens/splash/splash_screen_model.dart';
 import 'package:masmasgram_ui/utils/screen_sizes.dart';
@@ -12,8 +13,9 @@ SplashScreenWM createSplashScreenWM(BuildContext context) =>
     SplashScreenWM(SplashScreenModel());
 
 class SplashScreenWM extends WidgetModel<SplashScreen, SplashScreenModel>
-    with SingleTickerProviderWidgetModelMixin
+    with TickerProviderWidgetModelMixin
     implements ISplashScreenWM {
+  late final SplashStartAnimations _startAnimations;
   late final StateNotifier<int> _pageState;
   late final PageController _logoController;
   late final AnimationController _buttonTextColorController;
@@ -33,6 +35,11 @@ class SplashScreenWM extends WidgetModel<SplashScreen, SplashScreenModel>
       begin: Theme.of(context).colorScheme.background,
       end: Theme.of(context).textTheme.titleLarge!.color!,
     ).animate(_buttonTextColorController);
+    //* ----- ANIMATIONS ON START -----
+
+    _startAnimations = SplashStartAnimations(vsync: this);
+    _startAnimations.forward();
+    _startAnimations.forward();
     super.initWidgetModel();
   }
 
@@ -41,6 +48,7 @@ class SplashScreenWM extends WidgetModel<SplashScreen, SplashScreenModel>
     _pageState.dispose();
     _logoController.dispose();
     _buttonTextColorController.dispose();
+    _startAnimations.dispose();
     super.dispose();
   }
 
@@ -72,6 +80,9 @@ class SplashScreenWM extends WidgetModel<SplashScreen, SplashScreenModel>
 
   @override
   Color get textColor => Theme.of(context).textTheme.titleLarge!.color!;
+
+  @override
+  SplashStartAnimations get startAnimations => _startAnimations;
 
   @override
   PageController get logoController => _logoController;
@@ -124,6 +135,7 @@ abstract class ISplashScreenWM extends IWidgetModel {
   Color get dividerColor;
   Color get textColor;
 
+  SplashStartAnimations get startAnimations;
   PageController get logoController;
   StateNotifier<int> get pageState;
   Animation<Color?> get buttonTextColorAnimation;

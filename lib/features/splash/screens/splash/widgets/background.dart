@@ -39,26 +39,33 @@ class SplashBackgroundOuterRectangle extends StatelessWidget {
     return Positioned(
       left: -screenSize.width * 1.25,
       top: screenSize.height * .1,
-      child: Transform.rotate(
-        angle: -pi / 4,
-        child: Container(
-          width: outerSize.width,
-          height: outerSize.height,
-          alignment: Alignment.center,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(155.0),
-            border: Border.all(color: Theme.of(context).dividerColor),
-          ),
-          child: Container(
-            width: interSize.width,
-            height: interSize.height,
-            decoration: BoxDecoration(
-              color: Theme.of(context).primaryColor,
-              borderRadius: BorderRadius.circular(152.0),
-            ),
-          ),
-        ),
-      ),
+      child: AnimatedBuilder(
+          animation: splashWM.startAnimations.backgroundRect,
+          builder: (context, _) {
+            return SlideTransition(
+              position: splashWM.startAnimations.backgroundRect,
+              child: Transform.rotate(
+                angle: -pi / 4,
+                child: Container(
+                  width: outerSize.width,
+                  height: outerSize.height,
+                  alignment: Alignment.center,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(155.0),
+                    border: Border.all(color: Theme.of(context).dividerColor),
+                  ),
+                  child: Container(
+                    width: interSize.width,
+                    height: interSize.height,
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).primaryColor,
+                      borderRadius: BorderRadius.circular(152.0),
+                    ),
+                  ),
+                ),
+              ),
+            );
+          }),
     );
   }
 }

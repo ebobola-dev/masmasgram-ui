@@ -10,19 +10,34 @@ class SplashTabPageSelector extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StateNotifierBuilder(
-        listenableState: splashWM.pageState,
-        builder: (_, page) {
-          return Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              TabItem(splashWM: splashWM, tabNumber: 0),
-              const SizedBox(width: 8),
-              TabItem(splashWM: splashWM, tabNumber: 1),
-              const SizedBox(width: 8),
-              TabItem(splashWM: splashWM, tabNumber: 2),
-            ],
-          );
-        });
+      listenableState: splashWM.pageState,
+      builder: (_, page) {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: List.generate(
+            3,
+            (tabIndex) => AnimatedBuilder(
+                animation: splashWM.startAnimations.dots[tabIndex],
+                builder: (context, _) {
+                  return SlideTransition(
+                    position: splashWM.startAnimations.dots[tabIndex],
+                    child: TabItem(
+                      splashWM: splashWM,
+                      tabNumber: tabIndex,
+                    ),
+                  );
+                }),
+          ),
+          // children: [
+          //   TabItem(splashWM: splashWM, tabNumber: 0),
+          //   const SizedBox(width: 8),
+          //   TabItem(splashWM: splashWM, tabNumber: 1),
+          //   const SizedBox(width: 8),
+          //   TabItem(splashWM: splashWM, tabNumber: 2),
+          // ],
+        );
+      },
+    );
   }
 }
 
@@ -47,44 +62,51 @@ const lrCoordsPageCases = [
 class TabItem extends StatelessWidget {
   final ISplashScreenWM splashWM;
   final int tabNumber;
-  const TabItem({super.key, required this.splashWM, required this.tabNumber});
+  const TabItem({
+    super.key,
+    required this.splashWM,
+    required this.tabNumber,
+  });
 
   @override
   Widget build(BuildContext context) {
-    return StateNotifierBuilder<int>(
-        listenableState: splashWM.pageState,
-        builder: (context, page) {
-          return Stack(
-            children: [
-              Container(
-                width: 12,
-                height: 12,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: splashWM.textColor,
-                  ),
-                ),
-              ),
-              AnimatedPositioned(
-                duration: animationDuration,
-                curve: animationCurve,
-                left: lrCoordsPageCases[page!][tabNumber][0],
-                right: lrCoordsPageCases[page][tabNumber][1],
-                child: Container(
+    return Padding(
+      padding: const EdgeInsets.only(right: 8),
+      child: StateNotifierBuilder<int>(
+          listenableState: splashWM.pageState,
+          builder: (context, page) {
+            return Stack(
+              children: [
+                Container(
                   width: 12,
                   height: 12,
                   decoration: BoxDecoration(
-                    color: splashWM.textColor,
                     shape: BoxShape.circle,
                     border: Border.all(
                       color: splashWM.textColor,
                     ),
                   ),
                 ),
-              ),
-            ],
-          );
-        });
+                AnimatedPositioned(
+                  duration: animationDuration,
+                  curve: animationCurve,
+                  left: lrCoordsPageCases[page!][tabNumber][0],
+                  right: lrCoordsPageCases[page][tabNumber][1],
+                  child: Container(
+                    width: 12,
+                    height: 12,
+                    decoration: BoxDecoration(
+                      color: splashWM.textColor,
+                      shape: BoxShape.circle,
+                      border: Border.all(
+                        color: splashWM.textColor,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            );
+          }),
+    );
   }
 }
