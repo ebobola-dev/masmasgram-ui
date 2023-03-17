@@ -2,11 +2,11 @@ import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:masmasgram_ui/assets/themes/paddings.dart';
 import 'package:masmasgram_ui/features/splash/screens/splash/splash_screen_widget_model.dart';
-import 'package:masmasgram_ui/features/splash/screens/splash/widgets/background.dart';
-import 'package:masmasgram_ui/features/splash/screens/splash/widgets/logo.dart';
-import 'package:masmasgram_ui/features/splash/screens/splash/widgets/next_button.dart';
-import 'package:masmasgram_ui/features/splash/screens/splash/widgets/tab_page_selector.dart';
-import 'package:masmasgram_ui/features/splash/screens/splash/widgets/title.dart';
+import 'package:masmasgram_ui/features/splash/widgets/background.dart';
+import 'package:masmasgram_ui/features/splash/widgets/logo.dart';
+import 'package:masmasgram_ui/features/splash/widgets/next_button.dart';
+import 'package:masmasgram_ui/features/splash/widgets/tab_page_selector.dart';
+import 'package:masmasgram_ui/features/splash/widgets/title.dart';
 
 class SplashScreen extends ElementaryWidget<SplashScreenWM> {
   const SplashScreen({

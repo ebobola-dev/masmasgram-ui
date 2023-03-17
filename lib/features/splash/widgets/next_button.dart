@@ -84,48 +84,57 @@ class SplashNextButton extends StatelessWidget {
                       Material(
                         color: Colors.transparent,
                         borderRadius: splashWM.nextButtonInnerRadius,
-                        child: InkWell(
-                          onTap: splashWM.tapOnNext,
-                          splashColor: Theme.of(context).colorScheme.primary,
-                          borderRadius: splashWM.nextButtonInnerRadius,
-                          child: Wrapper(
-                            size: splashWM.nextButtonInnerSize,
-                            alignment: const Alignment(-0.15, -0.05),
-                            decoration: BoxDecoration(
-                              borderRadius: splashWM.nextButtonInnerRadius,
-                            ),
-                            child: Transform.rotate(
-                              angle: -pi / 4,
-                              child: AnimatedBuilder(
-                                animation: splashWM.buttonTextColorAnimation,
-                                builder: (context, _) {
-                                  return Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Text(
-                                        'Next',
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyLarge!
-                                            .copyWith(
+                        child: StateNotifierBuilder<int>(
+                            listenableState: splashWM.pageState,
+                            builder: (context, page) {
+                              return InkWell(
+                                onTap: splashWM.tapOnNext,
+                                splashColor: page == 2
+                                    ? splashWM.textColor
+                                    : Theme.of(context).colorScheme.primary,
+                                borderRadius: splashWM.nextButtonInnerRadius,
+                                child: Wrapper(
+                                  size: splashWM.nextButtonInnerSize,
+                                  alignment: const Alignment(-0.15, -0.05),
+                                  decoration: BoxDecoration(
+                                    borderRadius:
+                                        splashWM.nextButtonInnerRadius,
+                                  ),
+                                  child: Transform.rotate(
+                                    angle: -pi / 4,
+                                    child: AnimatedBuilder(
+                                      animation:
+                                          splashWM.buttonTextColorAnimation,
+                                      builder: (context, _) {
+                                        return Row(
+                                          mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Text(
+                                              'Next',
+                                              style: Theme.of(context)
+                                                  .textTheme
+                                                  .bodyLarge!
+                                                  .copyWith(
+                                                    color: splashWM
+                                                        .buttonTextColorAnimation
+                                                        .value,
+                                                  ),
+                                            ),
+                                            const SizedBox(width: 15),
+                                            Icon(
+                                              Icons.arrow_forward,
                                               color: splashWM
                                                   .buttonTextColorAnimation
                                                   .value,
                                             ),
-                                      ),
-                                      const SizedBox(width: 15),
-                                      Icon(
-                                        Icons.arrow_forward,
-                                        color: splashWM
-                                            .buttonTextColorAnimation.value,
-                                      ),
-                                    ],
-                                  );
-                                },
-                              ),
-                            ),
-                          ),
-                        ),
+                                          ],
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }),
                       ),
                     ],
                   ),

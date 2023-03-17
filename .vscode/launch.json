@@ -1,5 +1,6 @@
 {
 	"configurations": [
+
 		{
 			"name": "IPhone 13 Pro Debug Mode",
 			"program": "lib/main.dart",

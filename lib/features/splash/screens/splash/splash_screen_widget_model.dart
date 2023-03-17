@@ -39,7 +39,6 @@ class SplashScreenWM extends WidgetModel<SplashScreen, SplashScreenModel>
 
     _startAnimations = SplashStartAnimations(vsync: this);
     _startAnimations.forward();
-    _startAnimations.forward();
     super.initWidgetModel();
   }
 
