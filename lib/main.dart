@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:masmasgram_ui/app_providers.dart';
 import 'package:masmasgram_ui/assets/themes/app_theme.dart';
 import 'package:masmasgram_ui/features/splash/screens/splash/splash_screen.dart';
 
@@ -9,7 +10,9 @@ void main() {
     DeviceOrientation.portraitUp,
     DeviceOrientation.portraitDown,
   ]);
-  runApp(const MyApp());
+  runApp(AppProviders(
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {

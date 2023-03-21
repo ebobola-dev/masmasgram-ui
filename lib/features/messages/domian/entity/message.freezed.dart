@@ -22,7 +22,7 @@ Message _$MessageFromJson(Map<String, dynamic> json) {
 mixin _$Message {
   String get id => throw _privateConstructorUsedError;
   String get chatId => throw _privateConstructorUsedError;
-  DateTime get datetime => throw _privateConstructorUsedError;
+  DateTime get date => throw _privateConstructorUsedError;
   User get fromUser => throw _privateConstructorUsedError;
   String get text => throw _privateConstructorUsedError;
   bool get viewed => throw _privateConstructorUsedError;
@@ -40,7 +40,7 @@ abstract class $MessageCopyWith<$Res> {
   $Res call(
       {String id,
       String chatId,
-      DateTime datetime,
+      DateTime date,
       User fromUser,
       String text,
       bool viewed});
@@ -63,7 +63,7 @@ class _$MessageCopyWithImpl<$Res, $Val extends Message>
   $Res call({
     Object? id = null,
     Object? chatId = null,
-    Object? datetime = null,
+    Object? date = null,
     Object? fromUser = null,
     Object? text = null,
     Object? viewed = null,
@@ -77,9 +77,9 @@ class _$MessageCopyWithImpl<$Res, $Val extends Message>
           ? _value.chatId
           : chatId // ignore: cast_nullable_to_non_nullable
               as String,
-      datetime: null == datetime
-          ? _value.datetime
-          : datetime // ignore: cast_nullable_to_non_nullable
+      date: null == date
+          ? _value.date
+          : date // ignore: cast_nullable_to_non_nullable
               as DateTime,
       fromUser: null == fromUser
           ? _value.fromUser
@@ -115,7 +115,7 @@ abstract class _$$_MessageCopyWith<$Res> implements $MessageCopyWith<$Res> {
   $Res call(
       {String id,
       String chatId,
-      DateTime datetime,
+      DateTime date,
       User fromUser,
       String text,
       bool viewed});
@@ -136,7 +136,7 @@ class __$$_MessageCopyWithImpl<$Res>
   $Res call({
     Object? id = null,
     Object? chatId = null,
-    Object? datetime = null,
+    Object? date = null,
     Object? fromUser = null,
     Object? text = null,
     Object? viewed = null,
@@ -150,9 +150,9 @@ class __$$_MessageCopyWithImpl<$Res>
           ? _value.chatId
           : chatId // ignore: cast_nullable_to_non_nullable
               as String,
-      datetime: null == datetime
-          ? _value.datetime
-          : datetime // ignore: cast_nullable_to_non_nullable
+      date: null == date
+          ? _value.date
+          : date // ignore: cast_nullable_to_non_nullable
               as DateTime,
       fromUser: null == fromUser
           ? _value.fromUser
@@ -176,7 +176,7 @@ class _$_Message extends _Message {
   _$_Message(
       {required this.id,
       required this.chatId,
-      required this.datetime,
+      required this.date,
       required this.fromUser,
       required this.text,
       required this.viewed})
@@ -190,7 +190,7 @@ class _$_Message extends _Message {
   @override
   final String chatId;
   @override
-  final DateTime datetime;
+  final DateTime date;
   @override
   final User fromUser;
   @override
@@ -200,7 +200,7 @@ class _$_Message extends _Message {
 
   @override
   String toString() {
-    return 'Message(id: $id, chatId: $chatId, datetime: $datetime, fromUser: $fromUser, text: $text, viewed: $viewed)';
+    return 'Message(id: $id, chatId: $chatId, date: $date, fromUser: $fromUser, text: $text, viewed: $viewed)';
   }
 
   @override
@@ -210,8 +210,7 @@ class _$_Message extends _Message {
             other is _$_Message &&
             (identical(other.id, id) || other.id == id) &&
             (identical(other.chatId, chatId) || other.chatId == chatId) &&
-            (identical(other.datetime, datetime) ||
-                other.datetime == datetime) &&
+            (identical(other.date, date) || other.date == date) &&
             (identical(other.fromUser, fromUser) ||
                 other.fromUser == fromUser) &&
             (identical(other.text, text) || other.text == text) &&
@@ -221,7 +220,7 @@ class _$_Message extends _Message {
   @JsonKey(ignore: true)
   @override
   int get hashCode =>
-      Object.hash(runtimeType, id, chatId, datetime, fromUser, text, viewed);
+      Object.hash(runtimeType, id, chatId, date, fromUser, text, viewed);
 
   @JsonKey(ignore: true)
   @override
@@ -241,7 +240,7 @@ abstract class _Message extends Message {
   factory _Message(
       {required final String id,
       required final String chatId,
-      required final DateTime datetime,
+      required final DateTime date,
       required final User fromUser,
       required final String text,
       required final bool viewed}) = _$_Message;
@@ -254,7 +253,7 @@ abstract class _Message extends Message {
   @override
   String get chatId;
   @override
-  DateTime get datetime;
+  DateTime get date;
   @override
   User get fromUser;
   @override

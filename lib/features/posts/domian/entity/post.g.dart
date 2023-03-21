@@ -9,8 +9,7 @@ part of 'post.dart';
 _$_Post _$$_PostFromJson(Map<String, dynamic> json) => _$_Post(
       id: json['id'] as String,
       fromUser: User.fromJson(json['fromUser'] as Map<String, dynamic>),
-      datetime: DateTime.parse(json['datetime'] as String),
-      imageUrl: json['imageUrl'] as String,
+      date: DateTime.parse(json['date'] as String),
       description: json['description'] as String?,
       likesCount: json['likesCount'] as int,
       commentsCount: json['commentsCount'] as int,
@@ -20,8 +19,7 @@ _$_Post _$$_PostFromJson(Map<String, dynamic> json) => _$_Post(
 Map<String, dynamic> _$$_PostToJson(_$_Post instance) => <String, dynamic>{
       'id': instance.id,
       'fromUser': instance.fromUser,
-      'datetime': instance.datetime.toIso8601String(),
-      'imageUrl': instance.imageUrl,
+      'date': instance.date.toIso8601String(),
       'description': instance.description,
       'likesCount': instance.likesCount,
       'commentsCount': instance.commentsCount,

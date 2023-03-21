@@ -11,7 +11,7 @@ class Message with _$Message {
   factory Message({
     required final String id,
     required final String chatId,
-    required final DateTime datetime,
+    required final DateTime date,
     required final User fromUser,
     required final String text,
     required final bool viewed,

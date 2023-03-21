@@ -22,8 +22,7 @@ Post _$PostFromJson(Map<String, dynamic> json) {
 mixin _$Post {
   String get id => throw _privateConstructorUsedError;
   User get fromUser => throw _privateConstructorUsedError;
-  DateTime get datetime => throw _privateConstructorUsedError;
-  String get imageUrl => throw _privateConstructorUsedError;
+  DateTime get date => throw _privateConstructorUsedError;
   String? get description => throw _privateConstructorUsedError;
   int get likesCount => throw _privateConstructorUsedError;
   int get commentsCount => throw _privateConstructorUsedError;
@@ -42,8 +41,7 @@ abstract class $PostCopyWith<$Res> {
   $Res call(
       {String id,
       User fromUser,
-      DateTime datetime,
-      String imageUrl,
+      DateTime date,
       String? description,
       int likesCount,
       int commentsCount,
@@ -67,8 +65,7 @@ class _$PostCopyWithImpl<$Res, $Val extends Post>
   $Res call({
     Object? id = null,
     Object? fromUser = null,
-    Object? datetime = null,
-    Object? imageUrl = null,
+    Object? date = null,
     Object? description = freezed,
     Object? likesCount = null,
     Object? commentsCount = null,
@@ -83,14 +80,10 @@ class _$PostCopyWithImpl<$Res, $Val extends Post>
           ? _value.fromUser
           : fromUser // ignore: cast_nullable_to_non_nullable
               as User,
-      datetime: null == datetime
-          ? _value.datetime
-          : datetime // ignore: cast_nullable_to_non_nullable
+      date: null == date
+          ? _value.date
+          : date // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      imageUrl: null == imageUrl
-          ? _value.imageUrl
-          : imageUrl // ignore: cast_nullable_to_non_nullable
-              as String,
       description: freezed == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
@@ -128,8 +121,7 @@ abstract class _$$_PostCopyWith<$Res> implements $PostCopyWith<$Res> {
   $Res call(
       {String id,
       User fromUser,
-      DateTime datetime,
-      String imageUrl,
+      DateTime date,
       String? description,
       int likesCount,
       int commentsCount,
@@ -150,8 +142,7 @@ class __$$_PostCopyWithImpl<$Res> extends _$PostCopyWithImpl<$Res, _$_Post>
   $Res call({
     Object? id = null,
     Object? fromUser = null,
-    Object? datetime = null,
-    Object? imageUrl = null,
+    Object? date = null,
     Object? description = freezed,
     Object? likesCount = null,
     Object? commentsCount = null,
@@ -166,14 +157,10 @@ class __$$_PostCopyWithImpl<$Res> extends _$PostCopyWithImpl<$Res, _$_Post>
           ? _value.fromUser
           : fromUser // ignore: cast_nullable_to_non_nullable
               as User,
-      datetime: null == datetime
-          ? _value.datetime
-          : datetime // ignore: cast_nullable_to_non_nullable
+      date: null == date
+          ? _value.date
+          : date // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      imageUrl: null == imageUrl
-          ? _value.imageUrl
-          : imageUrl // ignore: cast_nullable_to_non_nullable
-              as String,
       description: freezed == description
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
@@ -200,8 +187,7 @@ class _$_Post extends _Post {
   _$_Post(
       {required this.id,
       required this.fromUser,
-      required this.datetime,
-      required this.imageUrl,
+      required this.date,
       this.description,
       required this.likesCount,
       required this.commentsCount,
@@ -215,9 +201,7 @@ class _$_Post extends _Post {
   @override
   final User fromUser;
   @override
-  final DateTime datetime;
-  @override
-  final String imageUrl;
+  final DateTime date;
   @override
   final String? description;
   @override
@@ -229,7 +213,7 @@ class _$_Post extends _Post {
 
   @override
   String toString() {
-    return 'Post(id: $id, fromUser: $fromUser, datetime: $datetime, imageUrl: $imageUrl, description: $description, likesCount: $likesCount, commentsCount: $commentsCount, favoritesCount: $favoritesCount)';
+    return 'Post(id: $id, fromUser: $fromUser, date: $date, description: $description, likesCount: $likesCount, commentsCount: $commentsCount, favoritesCount: $favoritesCount)';
   }
 
   @override
@@ -240,10 +224,7 @@ class _$_Post extends _Post {
             (identical(other.id, id) || other.id == id) &&
             (identical(other.fromUser, fromUser) ||
                 other.fromUser == fromUser) &&
-            (identical(other.datetime, datetime) ||
-                other.datetime == datetime) &&
-            (identical(other.imageUrl, imageUrl) ||
-                other.imageUrl == imageUrl) &&
+            (identical(other.date, date) || other.date == date) &&
             (identical(other.description, description) ||
                 other.description == description) &&
             (identical(other.likesCount, likesCount) ||
@@ -256,8 +237,8 @@ class _$_Post extends _Post {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, fromUser, datetime, imageUrl,
-      description, likesCount, commentsCount, favoritesCount);
+  int get hashCode => Object.hash(runtimeType, id, fromUser, date, description,
+      likesCount, commentsCount, favoritesCount);
 
   @JsonKey(ignore: true)
   @override
@@ -277,8 +258,7 @@ abstract class _Post extends Post {
   factory _Post(
       {required final String id,
       required final User fromUser,
-      required final DateTime datetime,
-      required final String imageUrl,
+      required final DateTime date,
       final String? description,
       required final int likesCount,
       required final int commentsCount,
@@ -292,9 +272,7 @@ abstract class _Post extends Post {
   @override
   User get fromUser;
   @override
-  DateTime get datetime;
-  @override
-  String get imageUrl;
+  DateTime get date;
   @override
   String? get description;
   @override

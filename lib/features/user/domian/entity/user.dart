@@ -10,9 +10,8 @@ class User with _$User {
   factory User({
     required final String id,
     required final String username,
-    final String? name,
+    final String? fullname,
     required final bool isOnline,
-    required final String avatarUrl,
     required final int postCount,
     required final int followersCount,
     required final int followsCount,

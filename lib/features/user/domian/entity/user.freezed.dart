@@ -22,9 +22,8 @@ User _$UserFromJson(Map<String, dynamic> json) {
 mixin _$User {
   String get id => throw _privateConstructorUsedError;
   String get username => throw _privateConstructorUsedError;
-  String? get name => throw _privateConstructorUsedError;
+  String? get fullname => throw _privateConstructorUsedError;
   bool get isOnline => throw _privateConstructorUsedError;
-  String get avatarUrl => throw _privateConstructorUsedError;
   int get postCount => throw _privateConstructorUsedError;
   int get followersCount => throw _privateConstructorUsedError;
   int get followsCount => throw _privateConstructorUsedError;
@@ -42,9 +41,8 @@ abstract class $UserCopyWith<$Res> {
   $Res call(
       {String id,
       String username,
-      String? name,
+      String? fullname,
       bool isOnline,
-      String avatarUrl,
       int postCount,
       int followersCount,
       int followsCount});
@@ -65,9 +63,8 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
   $Res call({
     Object? id = null,
     Object? username = null,
-    Object? name = freezed,
+    Object? fullname = freezed,
     Object? isOnline = null,
-    Object? avatarUrl = null,
     Object? postCount = null,
     Object? followersCount = null,
     Object? followsCount = null,
@@ -81,18 +78,14 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
           ? _value.username
           : username // ignore: cast_nullable_to_non_nullable
               as String,
-      name: freezed == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
+      fullname: freezed == fullname
+          ? _value.fullname
+          : fullname // ignore: cast_nullable_to_non_nullable
               as String?,
       isOnline: null == isOnline
           ? _value.isOnline
           : isOnline // ignore: cast_nullable_to_non_nullable
               as bool,
-      avatarUrl: null == avatarUrl
-          ? _value.avatarUrl
-          : avatarUrl // ignore: cast_nullable_to_non_nullable
-              as String,
       postCount: null == postCount
           ? _value.postCount
           : postCount // ignore: cast_nullable_to_non_nullable
@@ -118,9 +111,8 @@ abstract class _$$_UserCopyWith<$Res> implements $UserCopyWith<$Res> {
   $Res call(
       {String id,
       String username,
-      String? name,
+      String? fullname,
       bool isOnline,
-      String avatarUrl,
       int postCount,
       int followersCount,
       int followsCount});
@@ -137,9 +129,8 @@ class __$$_UserCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res, _$_User>
   $Res call({
     Object? id = null,
     Object? username = null,
-    Object? name = freezed,
+    Object? fullname = freezed,
     Object? isOnline = null,
-    Object? avatarUrl = null,
     Object? postCount = null,
     Object? followersCount = null,
     Object? followsCount = null,
@@ -153,18 +144,14 @@ class __$$_UserCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res, _$_User>
           ? _value.username
           : username // ignore: cast_nullable_to_non_nullable
               as String,
-      name: freezed == name
-          ? _value.name
-          : name // ignore: cast_nullable_to_non_nullable
+      fullname: freezed == fullname
+          ? _value.fullname
+          : fullname // ignore: cast_nullable_to_non_nullable
               as String?,
       isOnline: null == isOnline
           ? _value.isOnline
           : isOnline // ignore: cast_nullable_to_non_nullable
               as bool,
-      avatarUrl: null == avatarUrl
-          ? _value.avatarUrl
-          : avatarUrl // ignore: cast_nullable_to_non_nullable
-              as String,
       postCount: null == postCount
           ? _value.postCount
           : postCount // ignore: cast_nullable_to_non_nullable
@@ -187,9 +174,8 @@ class _$_User extends _User {
   _$_User(
       {required this.id,
       required this.username,
-      this.name,
+      this.fullname,
       required this.isOnline,
-      required this.avatarUrl,
       required this.postCount,
       required this.followersCount,
       required this.followsCount})
@@ -202,11 +188,9 @@ class _$_User extends _User {
   @override
   final String username;
   @override
-  final String? name;
+  final String? fullname;
   @override
   final bool isOnline;
-  @override
-  final String avatarUrl;
   @override
   final int postCount;
   @override
@@ -216,7 +200,7 @@ class _$_User extends _User {
 
   @override
   String toString() {
-    return 'User(id: $id, username: $username, name: $name, isOnline: $isOnline, avatarUrl: $avatarUrl, postCount: $postCount, followersCount: $followersCount, followsCount: $followsCount)';
+    return 'User(id: $id, username: $username, fullname: $fullname, isOnline: $isOnline, postCount: $postCount, followersCount: $followersCount, followsCount: $followsCount)';
   }
 
   @override
@@ -227,11 +211,10 @@ class _$_User extends _User {
             (identical(other.id, id) || other.id == id) &&
             (identical(other.username, username) ||
                 other.username == username) &&
-            (identical(other.name, name) || other.name == name) &&
+            (identical(other.fullname, fullname) ||
+                other.fullname == fullname) &&
             (identical(other.isOnline, isOnline) ||
                 other.isOnline == isOnline) &&
-            (identical(other.avatarUrl, avatarUrl) ||
-                other.avatarUrl == avatarUrl) &&
             (identical(other.postCount, postCount) ||
                 other.postCount == postCount) &&
             (identical(other.followersCount, followersCount) ||
@@ -242,8 +225,8 @@ class _$_User extends _User {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode => Object.hash(runtimeType, id, username, name, isOnline,
-      avatarUrl, postCount, followersCount, followsCount);
+  int get hashCode => Object.hash(runtimeType, id, username, fullname, isOnline,
+      postCount, followersCount, followsCount);
 
   @JsonKey(ignore: true)
   @override
@@ -263,9 +246,8 @@ abstract class _User extends User {
   factory _User(
       {required final String id,
       required final String username,
-      final String? name,
+      final String? fullname,
       required final bool isOnline,
-      required final String avatarUrl,
       required final int postCount,
       required final int followersCount,
       required final int followsCount}) = _$_User;
@@ -278,11 +260,9 @@ abstract class _User extends User {
   @override
   String get username;
   @override
-  String? get name;
+  String? get fullname;
   @override
   bool get isOnline;
-  @override
-  String get avatarUrl;
   @override
   int get postCount;
   @override

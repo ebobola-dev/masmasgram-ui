@@ -11,8 +11,7 @@ class Post with _$Post {
   factory Post({
     required final String id,
     required final User fromUser,
-    required final DateTime datetime,
-    required final String imageUrl,
+    required final DateTime date,
     final String? description,
     required final int likesCount,
     required final int commentsCount,
