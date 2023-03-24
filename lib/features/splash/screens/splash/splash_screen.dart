@@ -1,8 +1,8 @@
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:masmasgram_ui/assets/themes/paddings.dart';
+import 'package:masmasgram_ui/features/common/widgets/background.dart';
 import 'package:masmasgram_ui/features/splash/screens/splash/splash_screen_widget_model.dart';
-import 'package:masmasgram_ui/features/splash/widgets/background.dart';
 import 'package:masmasgram_ui/features/splash/widgets/logo.dart';
 import 'package:masmasgram_ui/features/splash/widgets/next_button.dart';
 import 'package:masmasgram_ui/features/splash/widgets/tab_page_selector.dart';
@@ -22,7 +22,16 @@ class SplashScreen extends ElementaryWidget<SplashScreenWM> {
       body: Stack(
         children: [
           //? Background
-          SplashBackgroundOuterRectangle(splashWM: wm),
+          AnimatedBuilder(
+            animation: wm.startAnimations.backgroundRect,
+            builder: (context, _) {
+              return BackgroundRectangle(
+                left: -screenSize.width * 1.25,
+                top: screenSize.height * .1,
+                positionAnimation: wm.startAnimations.backgroundRect,
+              );
+            },
+          ),
           Padding(
             padding: EdgeInsets.only(top: topIndent),
             child: SizedBox(

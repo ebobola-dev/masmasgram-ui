@@ -7,5 +7,5 @@ const tertiaryColor = Color(0xFFF6E5E1);
 const textColor = Color(0xFF000000);
 const greyTextColor = Color(0xFF656565);
 const iconColor = Color(0xFF000000);
-const dividerColor = Color(0xFFEEF2E2);
+const dividerColor = Color(0xFFF1F1FE);
 const buttonColor = Color(0xFF000000);

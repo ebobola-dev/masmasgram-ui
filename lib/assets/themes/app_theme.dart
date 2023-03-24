@@ -32,7 +32,6 @@ ThemeData getThemeData(BuildContext context) => ThemeData.light().copyWith(
         ),
         displayLarge: TextStyle(
           fontSize: 20.0,
-          fontWeight: FontWeight.bold,
           color: textColor,
         ),
         bodyLarge: TextStyle(
@@ -95,20 +94,23 @@ ThemeData getThemeData(BuildContext context) => ThemeData.light().copyWith(
         labelStyle: const TextStyle(
           color: greyTextColor,
           fontFamily: defaultFont,
-          fontSize: 17.0,
+          fontSize: 12.8,
+          fontWeight: FontWeight.w400,
         ),
-        errorStyle: const TextStyle(
+        floatingLabelStyle: const TextStyle(
+          color: greyTextColor,
           fontFamily: defaultFont,
-          fontSize: 12.0,
+          fontSize: 15.8,
+          fontWeight: FontWeight.w400,
         ),
         filled: true,
-        fillColor: secondaryColor,
+        fillColor: dividerColor,
         contentPadding: const EdgeInsets.symmetric(
           horizontal: 16.0,
-          vertical: 16.0,
+          vertical: 6.0,
         ),
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(10.0),
+          borderRadius: BorderRadius.circular(7.5),
           borderSide: BorderSide.none,
         ),
       ),

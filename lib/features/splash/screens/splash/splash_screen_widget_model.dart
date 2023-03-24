@@ -1,12 +1,12 @@
-import 'dart:developer';
-
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:masmasgram_ui/assets/strings/animations.dart';
 import 'package:masmasgram_ui/assets/strings/next_button.dart';
+import 'package:masmasgram_ui/features/auth/screens/auth/auth_screen.dart';
 import 'package:masmasgram_ui/features/splash/domian/entity/start_animations.dart';
 import 'package:masmasgram_ui/features/splash/screens/splash/splash_screen.dart';
 import 'package:masmasgram_ui/features/splash/screens/splash/splash_screen_model.dart';
+import 'package:masmasgram_ui/utils/animated_switch_page.dart';
 import 'package:masmasgram_ui/utils/screen_sizes.dart';
 
 SplashScreenWM createSplashScreenWM(BuildContext context) =>
@@ -95,9 +95,14 @@ class SplashScreenWM extends WidgetModel<SplashScreen, SplashScreenModel>
   @override
   void tapOnNext() {
     final newPage = model.swipe();
-    log('swiped to page -> $newPage');
     if (newPage == -1) {
-      //? swipe failed
+      //? Swipe to auth screen
+      animatedSwitchPage(
+        context,
+        AuthScreen(),
+        routeAnimation: RouteAnimation.slideLeft,
+        clearNavigator: true,
+      );
       return;
     }
     _swipe(newPage);

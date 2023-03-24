@@ -18,8 +18,8 @@ class SplashLogo extends StatelessWidget {
             child: PageView(
               controller: splashWM.logoController,
               children: [
-                Image.asset(logoV2Path),
-                Image.asset(logoV1Path),
+                Image.asset(ImagePaths.logoV2),
+                Image.asset(ImagePaths.logoV1),
               ],
             ),
           ),
