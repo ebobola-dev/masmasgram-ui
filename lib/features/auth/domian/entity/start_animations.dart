@@ -11,11 +11,11 @@ class AuthStartAnimations {
   }) {
     _mainController = AnimationController(
       vsync: vsync,
-      duration: animationDuration,
+      duration: Animations.mediumSpeed,
     );
     final curvedController = CurvedAnimation(
       parent: _mainController,
-      curve: animationCurve,
+      curve: Animations.curve,
     );
     _backgroundRect = Tween(
       begin: const Offset(0.0, -1.0),

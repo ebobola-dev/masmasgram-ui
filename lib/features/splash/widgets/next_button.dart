@@ -43,8 +43,8 @@ class SplashNextButton extends StatelessWidget {
                                 right = 0;
                               }
                               return AnimatedPositioned(
-                                duration: animationDuration,
-                                curve: animationCurve,
+                                duration: Animations.mediumSpeed,
+                                curve: Animations.curve,
                                 right: right,
                                 child: Wrapper(
                                   alignment: null,
@@ -66,8 +66,8 @@ class SplashNextButton extends StatelessWidget {
                                 left = splashWM.nextButtonInnerSize;
                               }
                               return AnimatedPositioned(
-                                duration: animationDuration,
-                                curve: animationCurve,
+                                duration: Animations.mediumSpeed,
+                                curve: Animations.curve,
                                 left: left,
                                 child: Wrapper(
                                   alignment: null,

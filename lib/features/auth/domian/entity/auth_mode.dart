@@ -7,4 +7,12 @@ enum AuthMode {
   const AuthMode({
     required this.name,
   });
+
+  AuthMode opposite() {
+    if (this == AuthMode.signIn) {
+      return AuthMode.signUp;
+    } else {
+      return AuthMode.signIn;
+    }
+  }
 }

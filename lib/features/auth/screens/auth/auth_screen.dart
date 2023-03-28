@@ -2,7 +2,9 @@ import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:masmasgram_ui/assets/themes/paddings.dart';
 import 'package:masmasgram_ui/features/auth/screens/auth/auth_widget_model.dart';
+import 'package:masmasgram_ui/features/auth/widgets/auth_button.dart';
 import 'package:masmasgram_ui/features/auth/widgets/auth_fields.dart';
+import 'package:masmasgram_ui/features/auth/widgets/auth_mode_text.dart';
 import 'package:masmasgram_ui/features/common/widgets/background.dart';
 
 class AuthScreen extends ElementaryWidget<AuthWM> {
@@ -41,6 +43,10 @@ class AuthScreen extends ElementaryWidget<AuthWM> {
                 children: [
                   SizedBox(height: screenSize.height * .15),
                   AuthFields(authWM: wm),
+                  Spacer(),
+                  AuthModeText(authWM: wm),
+                  const SizedBox(height: 24),
+                  AuthButton(authWM: wm),
                 ],
               ),
             ),

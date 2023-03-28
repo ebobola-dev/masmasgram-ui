@@ -17,24 +17,18 @@ class SplashTabPageSelector extends StatelessWidget {
           children: List.generate(
             3,
             (tabIndex) => AnimatedBuilder(
-                animation: splashWM.startAnimations.dots[tabIndex],
-                builder: (context, _) {
-                  return SlideTransition(
-                    position: splashWM.startAnimations.dots[tabIndex],
-                    child: TabItem(
-                      splashWM: splashWM,
-                      tabNumber: tabIndex,
-                    ),
-                  );
-                }),
+              animation: splashWM.startAnimations.dots[tabIndex],
+              builder: (context, _) {
+                return SlideTransition(
+                  position: splashWM.startAnimations.dots[tabIndex],
+                  child: TabItem(
+                    splashWM: splashWM,
+                    tabNumber: tabIndex,
+                  ),
+                );
+              },
+            ),
           ),
-          // children: [
-          //   TabItem(splashWM: splashWM, tabNumber: 0),
-          //   const SizedBox(width: 8),
-          //   TabItem(splashWM: splashWM, tabNumber: 1),
-          //   const SizedBox(width: 8),
-          //   TabItem(splashWM: splashWM, tabNumber: 2),
-          // ],
         );
       },
     );
@@ -88,8 +82,8 @@ class TabItem extends StatelessWidget {
                   ),
                 ),
                 AnimatedPositioned(
-                  duration: animationDuration,
-                  curve: animationCurve,
+                  duration: Animations.mediumSpeed,
+                  curve: Animations.curve,
                   left: lrCoordsPageCases[page!][tabNumber][0],
                   right: lrCoordsPageCases[page][tabNumber][1],
                   child: Container(

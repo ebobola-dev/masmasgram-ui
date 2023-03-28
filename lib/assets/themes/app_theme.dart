@@ -62,17 +62,19 @@ ThemeData getThemeData(BuildContext context) => ThemeData.light().copyWith(
       textSelectionTheme: const TextSelectionThemeData(cursorColor: textColor),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: primaryColor,
+          disabledBackgroundColor: dividerColor,
+          backgroundColor: textColor,
+          surfaceTintColor: Colors.red,
           padding: const EdgeInsets.symmetric(
             vertical: 16.0,
             horizontal: 16.0,
           ),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0),
+            borderRadius: BorderRadius.circular(7.5),
           ),
-          shadowColor: primaryColor,
+          shadowColor: textColor,
           textStyle: const TextStyle(
-            color: textColor,
+            color: backgroundColor,
             fontFamily: defaultFont,
             fontSize: 16.0,
             fontWeight: FontWeight.w500,

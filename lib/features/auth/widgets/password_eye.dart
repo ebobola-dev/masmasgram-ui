@@ -17,15 +17,61 @@ class PasswordEye extends StatelessWidget {
         return SuffixIconButton(
           show: !passwordIsEmpty!,
           onTap: authWM.tapOnPasswordEye,
-          icon: SvgPicture.asset(
-            IconPaths.eye,
-            colorFilter: ColorFilter.mode(
-              Theme.of(context).dividerColor,
-              BlendMode.srcIn,
-            ),
-          ),
+          icon: AnimatedBuilder(
+              animation: authWM.passwordEyeLineAnimation,
+              builder: (context, _) {
+                return CustomPaint(
+                  painter: EyeLinePainter(
+                    color: Theme.of(context).dividerColor,
+                    indent: authWM.passwordEyeLineIndent,
+                    value: authWM.passwordEyeLineAnimation.value,
+                  ),
+                  child: SvgPicture.asset(
+                    IconPaths.eye,
+                    colorFilter: ColorFilter.mode(
+                      Theme.of(context).dividerColor,
+                      BlendMode.srcIn,
+                    ),
+                  ),
+                );
+              }),
         );
       },
     );
   }
+}
+
+class EyeLinePainter extends CustomPainter {
+  final Color color;
+  final double indent;
+  final double value;
+
+  const EyeLinePainter({
+    required this.color,
+    required this.value,
+    this.indent = 2.0,
+  });
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final startPoint = Offset(indent, indent);
+    final endPoint = Offset(size.width - indent, size.height - indent);
+    final paint = Paint()
+      ..color = color
+      ..strokeWidth = 3
+      ..strokeCap = StrokeCap.round;
+    if (value > 0.0) {
+      canvas.drawLine(
+        startPoint,
+        endPoint * value,
+        paint,
+      );
+    }
+  }
+
+  @override
+  bool shouldRepaint(EyeLinePainter oldDelegate) => true;
+
+  @override
+  bool shouldRebuildSemantics(EyeLinePainter oldDelegate) => true;
 }

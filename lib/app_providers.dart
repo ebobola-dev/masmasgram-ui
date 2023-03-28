@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:masmasgram_ui/features/common/domian/providers/models_settings_provider.dart';
 import 'package:masmasgram_ui/features/common/services/api_client.dart';
 import 'package:provider/provider.dart';
 import 'package:dio/dio.dart';
@@ -16,6 +17,7 @@ class AppProviders extends StatelessWidget {
       providers: [
         Provider(create: (context) => Dio()),
         Provider(create: (context) => ApiClient(context.read<Dio>())),
+        Provider(create: (context) => ModelsSettingsProvider()),
       ],
       child: child,
     );

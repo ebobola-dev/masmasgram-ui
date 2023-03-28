@@ -17,16 +17,16 @@ class SplashStartAnimations {
   }) {
     _mainController = AnimationController(
       vsync: vsync,
-      duration: animationDuration,
+      duration: Animations.mediumSpeed,
     );
     final curvedController = CurvedAnimation(
       parent: _mainController,
-      curve: animationCurve,
+      curve: Animations.curve,
     );
     for (var i = 0; i < 3; i++) {
       _dotsControllers.add(AnimationController(
         vsync: vsync,
-        duration: animationDuration,
+        duration: Animations.mediumSpeed,
       ));
     }
     for (var i = 0; i < 3; i++) {
@@ -36,7 +36,7 @@ class SplashStartAnimations {
           end: Offset.zero,
         ).animate(CurvedAnimation(
           parent: _dotsControllers[i],
-          curve: animationCurve,
+          curve: Animations.curve,
         )),
       );
     }

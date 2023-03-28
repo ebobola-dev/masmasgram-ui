@@ -29,7 +29,7 @@ class SplashScreenWM extends WidgetModel<SplashScreen, SplashScreenModel>
     _logoController = PageController(initialPage: model.page);
     _buttonTextColorController = AnimationController(
       vsync: this,
-      duration: animationDuration,
+      duration: Animations.mediumSpeed,
     );
     _buttonTextColorAnimation = ColorTween(
       begin: Theme.of(context).colorScheme.background,
@@ -113,8 +113,8 @@ class SplashScreenWM extends WidgetModel<SplashScreen, SplashScreenModel>
     if (newPage == 1) {
       _logoController.animateToPage(
         newPage,
-        duration: animationDuration,
-        curve: animationCurve,
+        duration: Animations.mediumSpeed,
+        curve: Animations.curve,
       );
     }
 

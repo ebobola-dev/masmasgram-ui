@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:masmasgram_ui/assets/strings/animations.dart';
 import 'package:masmasgram_ui/assets/strings/image_paths.dart';
@@ -8,12 +9,16 @@ class CustomTextField extends StatefulWidget {
   final String? labelText;
   final Widget? additionalSuffixWidget;
   final bool obscureText;
+  final List<TextInputFormatter> inputFormatters;
+  final int? maxLength;
   const CustomTextField({
     super.key,
     this.controller,
     this.labelText,
     this.additionalSuffixWidget,
     this.obscureText = false,
+    this.inputFormatters = const [],
+    this.maxLength,
   });
 
   @override
@@ -27,15 +32,17 @@ class _CustomTextFieldState extends State<CustomTextField> {
   void initState() {
     if (widget.controller != null) {
       widget.controller!.addListener(() {
-        if (widget.controller!.text.isNotEmpty && !_showErase) {
-          setState(() {
-            _showErase = true;
-          });
-        }
-        if (widget.controller!.text.isEmpty && _showErase) {
-          setState(() {
-            _showErase = false;
-          });
+        if (mounted) {
+          if (widget.controller!.text.isNotEmpty && !_showErase) {
+            setState(() {
+              _showErase = true;
+            });
+          }
+          if (widget.controller!.text.isEmpty && _showErase) {
+            setState(() {
+              _showErase = false;
+            });
+          }
         }
       });
     }
@@ -48,29 +55,30 @@ class _CustomTextFieldState extends State<CustomTextField> {
       obscureText: widget.obscureText,
       controller: widget.controller,
       style: Theme.of(context).textTheme.bodyMedium,
+      inputFormatters: widget.inputFormatters,
+      maxLength: widget.maxLength,
       decoration: InputDecoration(
+        counterText: '',
         labelText: widget.labelText,
         suffixIcon: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             if (widget.additionalSuffixWidget != null)
               widget.additionalSuffixWidget!,
-            AnimatedSize(
-              duration: animationDuration,
-              curve: animationCurve,
-              child: SuffixIconButton(
-                onTap: () => widget.controller?.clear(),
-                show: _showErase,
-                icon: SvgPicture.asset(
-                  IconPaths.cross_circle,
-                  colorFilter: ColorFilter.mode(
-                    Theme.of(context).dividerColor,
-                    BlendMode.srcIn,
-                  ),
+            SuffixIconButton(
+              onTap: () => widget.controller?.clear(),
+              show: _showErase,
+              icon: SvgPicture.asset(
+                IconPaths.cross_circle,
+                colorFilter: ColorFilter.mode(
+                  Theme.of(context).dividerColor,
+                  BlendMode.srcIn,
                 ),
               ),
             ),
-            const SizedBox(width: 8.0),
+            SizedBox(
+              width: widget.additionalSuffixWidget != null ? 12.0 : 8.0,
+            ),
           ],
         ),
       ),
@@ -92,8 +100,8 @@ class SuffixIconButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return AnimatedSize(
-      duration: animationDuration,
-      curve: animationCurve,
+      duration: Animations.mediumSpeed,
+      curve: Animations.curve,
       child: show
           ? GestureDetector(
               onTap: onTap,
