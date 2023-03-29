@@ -1,8 +1,7 @@
-import 'package:masmasgram_ui/features/common/domian/entity/models_settings.dart';
 import 'package:masmasgram_ui/features/common/services/api_client.dart';
 
 abstract class IModelsSettingsRepository {
-  Future<void> initialize();
+  Future<dynamic> get();
 }
 
 class ModelsSettingsRepository implements IModelsSettingsRepository {
@@ -11,7 +10,7 @@ class ModelsSettingsRepository implements IModelsSettingsRepository {
   const ModelsSettingsRepository(this._aliClient);
 
   @override
-  Future<ModelsSettings?> initialize() async {
+  Future<dynamic> get() async {
     final modelsSettings = await _aliClient.getModelsSettings();
     return modelsSettings;
   }

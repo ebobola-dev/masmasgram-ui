@@ -1,8 +1,11 @@
+import 'dart:developer';
+
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
 import 'package:masmasgram_ui/assets/strings/animations.dart';
 import 'package:masmasgram_ui/features/auth/domian/entity/auth_mode.dart';
 import 'package:masmasgram_ui/features/auth/domian/entity/start_animations.dart';
+import 'package:masmasgram_ui/features/auth/domian/repositoties/auth_repository.dart';
 import 'package:masmasgram_ui/features/auth/screens/auth/auth_screen.dart';
 import 'package:masmasgram_ui/features/auth/screens/auth/auth_model.dart';
 import 'package:masmasgram_ui/features/common/domian/entity/models_settings.dart';
@@ -16,6 +19,7 @@ import 'package:provider/provider.dart';
 AuthWM createAuthWM(BuildContext context) => AuthWM(AuthModel(
       modelsSettingsRepository:
           ModelsSettingsRepository(context.read<ApiClient>()),
+      authRepository: AuthRepository(context.read<ApiClient>()),
     ));
 
 class AuthWM extends WidgetModel<AuthScreen, AuthModel>
@@ -62,6 +66,8 @@ class AuthWM extends WidgetModel<AuthScreen, AuthModel>
       parent: _passwordEyeLineController,
       curve: Animations.curve,
     ));
+    //? Так как пароль скрыт по дефолту, сразу рисуем линию, зачеркивающую глаз
+    _passwordEyeLineController.forward();
 
     _usernameFieldController.addListener(() {
       _checkCanAuth();
@@ -81,10 +87,30 @@ class AuthWM extends WidgetModel<AuthScreen, AuthModel>
 
     _startAnimations.forward();
 
+    model.errorStream.listen((error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          behavior: SnackBarBehavior.floating,
+          margin: EdgeInsets.only(bottom: getScreenSize(context).height - 150),
+          content: Text(
+            error,
+            style: Theme.of(context).textTheme.bodySmall,
+          ),
+        ),
+      );
+    });
+
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       final modelsSettings = await model.initializeModelsSettings();
-      _modelsSettings.accept(modelsSettings);
-      context.read<ModelsSettingsProvider>().set(modelsSettings);
+      if (modelsSettings is ModelsSettings) {
+        _modelsSettings.accept(modelsSettings);
+        context.read<ModelsSettingsProvider>().set(modelsSettings);
+      } else {
+        log(
+          'Error on initialization Models Settings: $modelsSettings',
+          name: 'Auth WM',
+        );
+      }
     });
 
     super.initWidgetModel();
@@ -234,11 +260,31 @@ class AuthWM extends WidgetModel<AuthScreen, AuthModel>
 
   @override
   void changeAuthMode() {
+    _fullnameFieldController.clear();
     _authMode.accept(_authMode.value!.opposite());
   }
 
   @override
-  void tapOnAuthButton() {}
+  Future<void> tapOnAuthButton() async {
+    //if (!_canAuth.value!) return;
+    final username = _usernameFieldController.text;
+    final password = _passwordFieldController.text;
+    if (_authMode.value! == AuthMode.signUp) {
+      final fullname = _fullnameFieldController.text;
+      await model.registration(
+        username: username,
+        password: password,
+        fullname: fullname,
+      );
+      //TODO
+    } else {
+      await model.login(
+        username: username,
+        password: password,
+      );
+      //TODO
+    }
+  }
 }
 
 abstract class IAuthWM extends IWidgetModel {
@@ -272,5 +318,5 @@ abstract class IAuthWM extends IWidgetModel {
 
   void tapOnPasswordEye();
   void changeAuthMode();
-  void tapOnAuthButton();
+  Future<void> tapOnAuthButton();
 }

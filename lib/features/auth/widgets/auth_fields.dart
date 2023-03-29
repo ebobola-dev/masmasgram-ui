@@ -59,6 +59,7 @@ class AuthFields extends StatelessWidget {
                   labelPadding: authWM.fieldLabelPadding,
                   controller: authWM.usernameFieldController,
                   maxLength: modelsSettings?.username.maxLen,
+                  textInputAction: TextInputAction.next,
                   additionalLabel:
                       authMode == AuthMode.signUp && modelsSettings != null
                           ? FieldAdditionalLabel(
@@ -80,6 +81,12 @@ class AuthFields extends StatelessWidget {
                       additionalSuffixWidget: PasswordEye(authWM: authWM),
                       obscureText: !showPassword!,
                       maxLength: modelsSettings?.password.maxLen,
+                      onSubmitted: authMode == AuthMode.signIn
+                          ? (_) => authWM.tapOnAuthButton()
+                          : null,
+                      textInputAction: authMode == AuthMode.signUp
+                          ? TextInputAction.next
+                          : TextInputAction.done,
                       additionalLabel:
                           authMode == AuthMode.signUp && modelsSettings != null
                               ? FieldAdditionalLabel(
@@ -103,7 +110,18 @@ class AuthFields extends StatelessWidget {
                           labelPadding: authWM.fieldLabelPadding,
                           controller: authWM.fullnameFieldController,
                           maxLength: modelsSettings?.password.maxLen,
+                          textInputAction: TextInputAction.done,
+                          onSubmitted: authMode == AuthMode.signUp
+                              ? (_) => authWM.tapOnAuthButton()
+                              : null,
                           bottomPadding: 0.0,
+                          additionalLabel: authMode == AuthMode.signUp &&
+                                  modelsSettings != null
+                              ? Text(
+                                  ' (max. ${modelsSettings.fullname.maxLen} of characters)',
+                                  style: authWM.fieldLabelStyle,
+                                )
+                              : null,
                         )
                       : SizedBox(),
                 ),
@@ -127,6 +145,8 @@ class AuthField extends StatelessWidget {
   final bool obscureText;
   final List<TextInputFormatter> inputFormatters;
   final int? maxLength;
+  final TextInputAction? textInputAction;
+  final void Function(String)? onSubmitted;
   const AuthField({
     super.key,
     required this.labelText,
@@ -139,6 +159,8 @@ class AuthField extends StatelessWidget {
     this.obscureText = false,
     this.inputFormatters = const [],
     this.maxLength,
+    this.textInputAction,
+    this.onSubmitted,
   });
 
   @override
@@ -166,6 +188,8 @@ class AuthField extends StatelessWidget {
           obscureText: obscureText,
           maxLength: maxLength,
           inputFormatters: inputFormatters,
+          textInputAction: textInputAction,
+          onSubmitted: onSubmitted,
         ),
         if (bottomPadding > 0) SizedBox(height: bottomPadding),
       ],

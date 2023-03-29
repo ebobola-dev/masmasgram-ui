@@ -11,6 +11,8 @@ class CustomTextField extends StatefulWidget {
   final bool obscureText;
   final List<TextInputFormatter> inputFormatters;
   final int? maxLength;
+  final TextInputAction? textInputAction;
+  final void Function(String)? onSubmitted;
   const CustomTextField({
     super.key,
     this.controller,
@@ -19,6 +21,8 @@ class CustomTextField extends StatefulWidget {
     this.obscureText = false,
     this.inputFormatters = const [],
     this.maxLength,
+    this.textInputAction,
+    this.onSubmitted,
   });
 
   @override
@@ -57,6 +61,8 @@ class _CustomTextFieldState extends State<CustomTextField> {
       style: Theme.of(context).textTheme.bodyMedium,
       inputFormatters: widget.inputFormatters,
       maxLength: widget.maxLength,
+      textInputAction: widget.textInputAction,
+      onSubmitted: widget.onSubmitted,
       decoration: InputDecoration(
         counterText: '',
         labelText: widget.labelText,
