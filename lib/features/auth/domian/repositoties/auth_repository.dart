@@ -1,3 +1,4 @@
+import 'package:masmasgram_ui/features/common/domian/entity/registation_request/registation_request_result.dart';
 import 'package:masmasgram_ui/features/common/services/api_client.dart';
 
 abstract class IAuthRepository {
@@ -21,7 +22,7 @@ class AuthRepository implements IAuthRepository {
   }
 
   @override
-  Future<dynamic> registration({
+  Future<RegistrationRequestResult> registration({
     required String username,
     required String password,
     required String fullname,

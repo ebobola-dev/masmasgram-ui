@@ -1,16 +1,16 @@
 import 'dart:async';
-import 'dart:developer';
 
 import 'package:elementary/elementary.dart';
 import 'package:masmasgram_ui/features/auth/domian/entity/auth_mode.dart';
 import 'package:masmasgram_ui/features/auth/domian/repositoties/auth_repository.dart';
-import 'package:masmasgram_ui/features/common/domian/entity/api_error.dart';
+import 'package:masmasgram_ui/features/common/domian/entity/registation_request/registation_request_result.dart';
 import 'package:masmasgram_ui/features/common/domian/repositories/models_settings.dart';
 
 class AuthModel extends ElementaryModel {
   final ModelsSettingsRepository _modelsSettingsRepo;
   final AuthRepository _authRepository;
-  final StreamController<String> _errorStream = StreamController<String>();
+  // final StreamController<String> _errorStream = StreamController<String>();
+  // final StreamController<String> _successStream = StreamController<String>();
   String? _token;
   AuthMode _currentAuthMode = AuthMode.signUp;
 
@@ -22,7 +22,8 @@ class AuthModel extends ElementaryModel {
 
   String? get token => _token;
   AuthMode get currentAuthMode => _currentAuthMode;
-  Stream<String> get errorStream => _errorStream.stream.asBroadcastStream();
+  // Stream<String> get errorStream => _errorStream.stream.asBroadcastStream();
+  // Stream<String> get successStream => _successStream.stream.asBroadcastStream();
 
   Future<dynamic> initializeModelsSettings() async {
     final modelsSettings = await _modelsSettingsRepo.get();
@@ -38,37 +39,30 @@ class AuthModel extends ElementaryModel {
     return _currentAuthMode;
   }
 
-  Future<void> registration({
+  Future<RegistrationRequestResult> registration({
     required String username,
     required String password,
     required String fullname,
   }) async {
-    final registrationResult = await _authRepository.registration(
+    return await _authRepository.registration(
       username: username,
       password: password,
       fullname: fullname,
     );
-    if (registrationResult is Map<String, dynamic>) {
-      //* Registration success
-    } else {
-      //* Registration failed
-      var errorMessage = 'Произошла ошибка при регистрации:';
-      log('error runtimeType: ${registrationResult.runtimeType}');
-      if (registrationResult is ApiMultipleError) {
-        for (var error in registrationResult.errors) {
-          errorMessage += '\n-$error';
-        }
-      } else if (registrationResult is ApiSingleError) {
-        errorMessage += '\n-${registrationResult.error}';
-      } else if (registrationResult is ApiUnexpectedError) {
-        errorMessage += '\n-${registrationResult.message}';
-      } else if (registrationResult is ApiNoAnswerError) {
-        errorMessage += '\n-${registrationResult.message}';
-      } else {
-        errorMessage += '\n-Хто я?';
-      }
-      _errorStream.add(errorMessage);
-    }
+    // if (registrationResult is SuccessfullyRegistered) {
+    //   //* Registration success
+    // } else if (registrationResult is RegistrationFailed) {
+    //   //* Registration failed
+    //   final euErrors = registrationResult.error.euErrors;
+    //   var errorMessage = '';
+    //   for (var item in euErrors.asMap().entries) {
+    //     errorMessage += '${item.value}';
+    //     if (item.key != euErrors.length - 1) {
+    //       errorMessage += '\n';
+    //     }
+    //   }
+    //   _errorStream.add(errorMessage);
+    // }
   }
 
   Future<void> login({

@@ -3,39 +3,24 @@ import 'package:freezed_annotation/freezed_annotation.dart';
 part 'api_error.freezed.dart';
 part 'api_error.g.dart';
 
-//TODO will be redone to inheritance
-
-class ApiNoAnswerError {
-  final String message = 'The response to the request is empty';
-}
-
-class ApiUnexpectedError {
-  final String message;
-  ApiUnexpectedError({
-    this.message = 'Unexcpected server error',
-  });
-}
-
 @freezed
-class ApiSingleError with _$ApiSingleError {
-  const ApiSingleError._();
+class ApiError with _$ApiError {
+  const ApiError._();
 
-  factory ApiSingleError({
-    required final String error,
-  }) = _ApiSingleError;
+  const factory ApiError({
+    required final List<String> ruErrors,
+    required final List<String> euErrors,
+  }) = _ApiError;
 
-  factory ApiSingleError.fromJson(Map<String, dynamic> json) =>
-      _$ApiSingleErrorFromJson(json);
+  factory ApiError.fromJson(Map<String, dynamic> json) =>
+      _$ApiErrorFromJson(json);
 }
 
-@freezed
-class ApiMultipleError with _$ApiMultipleError {
-  const ApiMultipleError._();
-
-  factory ApiMultipleError({
-    required final List<String> errors,
-  }) = _ApiMultipleError;
-
-  factory ApiMultipleError.fromJson(Map<String, dynamic> json) =>
-      _$ApiMultipleErrorFromJson(json);
-}
+const noAnswerError = const ApiError(
+  euErrors: ['No answer from the server'],
+  ruErrors: ['Нет ответа от сервера'],
+);
+const unknownError = const ApiError(
+  euErrors: ['Unknown server error'],
+  ruErrors: ['Неизвестная ошибка'],
+);

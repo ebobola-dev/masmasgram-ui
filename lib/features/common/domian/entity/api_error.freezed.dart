@@ -14,33 +14,33 @@ T _$identity<T>(T value) => value;
 final _privateConstructorUsedError = UnsupportedError(
     'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#custom-getters-and-methods');
 
-ApiSingleError _$ApiSingleErrorFromJson(Map<String, dynamic> json) {
-  return _ApiSingleError.fromJson(json);
+ApiError _$ApiErrorFromJson(Map<String, dynamic> json) {
+  return _ApiError.fromJson(json);
 }
 
 /// @nodoc
-mixin _$ApiSingleError {
-  String get error => throw _privateConstructorUsedError;
+mixin _$ApiError {
+  List<String> get ruErrors => throw _privateConstructorUsedError;
+  List<String> get euErrors => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
-  $ApiSingleErrorCopyWith<ApiSingleError> get copyWith =>
+  $ApiErrorCopyWith<ApiError> get copyWith =>
       throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $ApiSingleErrorCopyWith<$Res> {
-  factory $ApiSingleErrorCopyWith(
-          ApiSingleError value, $Res Function(ApiSingleError) then) =
-      _$ApiSingleErrorCopyWithImpl<$Res, ApiSingleError>;
+abstract class $ApiErrorCopyWith<$Res> {
+  factory $ApiErrorCopyWith(ApiError value, $Res Function(ApiError) then) =
+      _$ApiErrorCopyWithImpl<$Res, ApiError>;
   @useResult
-  $Res call({String error});
+  $Res call({List<String> ruErrors, List<String> euErrors});
 }
 
 /// @nodoc
-class _$ApiSingleErrorCopyWithImpl<$Res, $Val extends ApiSingleError>
-    implements $ApiSingleErrorCopyWith<$Res> {
-  _$ApiSingleErrorCopyWithImpl(this._value, this._then);
+class _$ApiErrorCopyWithImpl<$Res, $Val extends ApiError>
+    implements $ApiErrorCopyWith<$Res> {
+  _$ApiErrorCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
@@ -50,182 +50,54 @@ class _$ApiSingleErrorCopyWithImpl<$Res, $Val extends ApiSingleError>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? error = null,
+    Object? ruErrors = null,
+    Object? euErrors = null,
   }) {
     return _then(_value.copyWith(
-      error: null == error
-          ? _value.error
-          : error // ignore: cast_nullable_to_non_nullable
-              as String,
-    ) as $Val);
-  }
-}
-
-/// @nodoc
-abstract class _$$_ApiSingleErrorCopyWith<$Res>
-    implements $ApiSingleErrorCopyWith<$Res> {
-  factory _$$_ApiSingleErrorCopyWith(
-          _$_ApiSingleError value, $Res Function(_$_ApiSingleError) then) =
-      __$$_ApiSingleErrorCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call({String error});
-}
-
-/// @nodoc
-class __$$_ApiSingleErrorCopyWithImpl<$Res>
-    extends _$ApiSingleErrorCopyWithImpl<$Res, _$_ApiSingleError>
-    implements _$$_ApiSingleErrorCopyWith<$Res> {
-  __$$_ApiSingleErrorCopyWithImpl(
-      _$_ApiSingleError _value, $Res Function(_$_ApiSingleError) _then)
-      : super(_value, _then);
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? error = null,
-  }) {
-    return _then(_$_ApiSingleError(
-      error: null == error
-          ? _value.error
-          : error // ignore: cast_nullable_to_non_nullable
-              as String,
-    ));
-  }
-}
-
-/// @nodoc
-@JsonSerializable()
-class _$_ApiSingleError extends _ApiSingleError {
-  _$_ApiSingleError({required this.error}) : super._();
-
-  factory _$_ApiSingleError.fromJson(Map<String, dynamic> json) =>
-      _$$_ApiSingleErrorFromJson(json);
-
-  @override
-  final String error;
-
-  @override
-  String toString() {
-    return 'ApiSingleError(error: $error)';
-  }
-
-  @override
-  bool operator ==(dynamic other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$_ApiSingleError &&
-            (identical(other.error, error) || other.error == error));
-  }
-
-  @JsonKey(ignore: true)
-  @override
-  int get hashCode => Object.hash(runtimeType, error);
-
-  @JsonKey(ignore: true)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$_ApiSingleErrorCopyWith<_$_ApiSingleError> get copyWith =>
-      __$$_ApiSingleErrorCopyWithImpl<_$_ApiSingleError>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$_ApiSingleErrorToJson(
-      this,
-    );
-  }
-}
-
-abstract class _ApiSingleError extends ApiSingleError {
-  factory _ApiSingleError({required final String error}) = _$_ApiSingleError;
-  _ApiSingleError._() : super._();
-
-  factory _ApiSingleError.fromJson(Map<String, dynamic> json) =
-      _$_ApiSingleError.fromJson;
-
-  @override
-  String get error;
-  @override
-  @JsonKey(ignore: true)
-  _$$_ApiSingleErrorCopyWith<_$_ApiSingleError> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-ApiMultipleError _$ApiMultipleErrorFromJson(Map<String, dynamic> json) {
-  return _ApiMultipleError.fromJson(json);
-}
-
-/// @nodoc
-mixin _$ApiMultipleError {
-  List<String> get errors => throw _privateConstructorUsedError;
-
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
-  @JsonKey(ignore: true)
-  $ApiMultipleErrorCopyWith<ApiMultipleError> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class $ApiMultipleErrorCopyWith<$Res> {
-  factory $ApiMultipleErrorCopyWith(
-          ApiMultipleError value, $Res Function(ApiMultipleError) then) =
-      _$ApiMultipleErrorCopyWithImpl<$Res, ApiMultipleError>;
-  @useResult
-  $Res call({List<String> errors});
-}
-
-/// @nodoc
-class _$ApiMultipleErrorCopyWithImpl<$Res, $Val extends ApiMultipleError>
-    implements $ApiMultipleErrorCopyWith<$Res> {
-  _$ApiMultipleErrorCopyWithImpl(this._value, this._then);
-
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
-
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? errors = null,
-  }) {
-    return _then(_value.copyWith(
-      errors: null == errors
-          ? _value.errors
-          : errors // ignore: cast_nullable_to_non_nullable
+      ruErrors: null == ruErrors
+          ? _value.ruErrors
+          : ruErrors // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      euErrors: null == euErrors
+          ? _value.euErrors
+          : euErrors // ignore: cast_nullable_to_non_nullable
               as List<String>,
     ) as $Val);
   }
 }
 
 /// @nodoc
-abstract class _$$_ApiMultipleErrorCopyWith<$Res>
-    implements $ApiMultipleErrorCopyWith<$Res> {
-  factory _$$_ApiMultipleErrorCopyWith(
-          _$_ApiMultipleError value, $Res Function(_$_ApiMultipleError) then) =
-      __$$_ApiMultipleErrorCopyWithImpl<$Res>;
+abstract class _$$_ApiErrorCopyWith<$Res> implements $ApiErrorCopyWith<$Res> {
+  factory _$$_ApiErrorCopyWith(
+          _$_ApiError value, $Res Function(_$_ApiError) then) =
+      __$$_ApiErrorCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({List<String> errors});
+  $Res call({List<String> ruErrors, List<String> euErrors});
 }
 
 /// @nodoc
-class __$$_ApiMultipleErrorCopyWithImpl<$Res>
-    extends _$ApiMultipleErrorCopyWithImpl<$Res, _$_ApiMultipleError>
-    implements _$$_ApiMultipleErrorCopyWith<$Res> {
-  __$$_ApiMultipleErrorCopyWithImpl(
-      _$_ApiMultipleError _value, $Res Function(_$_ApiMultipleError) _then)
+class __$$_ApiErrorCopyWithImpl<$Res>
+    extends _$ApiErrorCopyWithImpl<$Res, _$_ApiError>
+    implements _$$_ApiErrorCopyWith<$Res> {
+  __$$_ApiErrorCopyWithImpl(
+      _$_ApiError _value, $Res Function(_$_ApiError) _then)
       : super(_value, _then);
 
   @pragma('vm:prefer-inline')
   @override
   $Res call({
-    Object? errors = null,
+    Object? ruErrors = null,
+    Object? euErrors = null,
   }) {
-    return _then(_$_ApiMultipleError(
-      errors: null == errors
-          ? _value._errors
-          : errors // ignore: cast_nullable_to_non_nullable
+    return _then(_$_ApiError(
+      ruErrors: null == ruErrors
+          ? _value._ruErrors
+          : ruErrors // ignore: cast_nullable_to_non_nullable
+              as List<String>,
+      euErrors: null == euErrors
+          ? _value._euErrors
+          : euErrors // ignore: cast_nullable_to_non_nullable
               as List<String>,
     ));
   }
@@ -233,66 +105,82 @@ class __$$_ApiMultipleErrorCopyWithImpl<$Res>
 
 /// @nodoc
 @JsonSerializable()
-class _$_ApiMultipleError extends _ApiMultipleError {
-  _$_ApiMultipleError({required final List<String> errors})
-      : _errors = errors,
+class _$_ApiError extends _ApiError {
+  const _$_ApiError(
+      {required final List<String> ruErrors,
+      required final List<String> euErrors})
+      : _ruErrors = ruErrors,
+        _euErrors = euErrors,
         super._();
 
-  factory _$_ApiMultipleError.fromJson(Map<String, dynamic> json) =>
-      _$$_ApiMultipleErrorFromJson(json);
+  factory _$_ApiError.fromJson(Map<String, dynamic> json) =>
+      _$$_ApiErrorFromJson(json);
 
-  final List<String> _errors;
+  final List<String> _ruErrors;
   @override
-  List<String> get errors {
-    if (_errors is EqualUnmodifiableListView) return _errors;
+  List<String> get ruErrors {
+    if (_ruErrors is EqualUnmodifiableListView) return _ruErrors;
     // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_errors);
+    return EqualUnmodifiableListView(_ruErrors);
+  }
+
+  final List<String> _euErrors;
+  @override
+  List<String> get euErrors {
+    if (_euErrors is EqualUnmodifiableListView) return _euErrors;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_euErrors);
   }
 
   @override
   String toString() {
-    return 'ApiMultipleError(errors: $errors)';
+    return 'ApiError(ruErrors: $ruErrors, euErrors: $euErrors)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is _$_ApiMultipleError &&
-            const DeepCollectionEquality().equals(other._errors, _errors));
+            other is _$_ApiError &&
+            const DeepCollectionEquality().equals(other._ruErrors, _ruErrors) &&
+            const DeepCollectionEquality().equals(other._euErrors, _euErrors));
   }
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, const DeepCollectionEquality().hash(_errors));
+  int get hashCode => Object.hash(
+      runtimeType,
+      const DeepCollectionEquality().hash(_ruErrors),
+      const DeepCollectionEquality().hash(_euErrors));
 
   @JsonKey(ignore: true)
   @override
   @pragma('vm:prefer-inline')
-  _$$_ApiMultipleErrorCopyWith<_$_ApiMultipleError> get copyWith =>
-      __$$_ApiMultipleErrorCopyWithImpl<_$_ApiMultipleError>(this, _$identity);
+  _$$_ApiErrorCopyWith<_$_ApiError> get copyWith =>
+      __$$_ApiErrorCopyWithImpl<_$_ApiError>(this, _$identity);
 
   @override
   Map<String, dynamic> toJson() {
-    return _$$_ApiMultipleErrorToJson(
+    return _$$_ApiErrorToJson(
       this,
     );
   }
 }
 
-abstract class _ApiMultipleError extends ApiMultipleError {
-  factory _ApiMultipleError({required final List<String> errors}) =
-      _$_ApiMultipleError;
-  _ApiMultipleError._() : super._();
+abstract class _ApiError extends ApiError {
+  const factory _ApiError(
+      {required final List<String> ruErrors,
+      required final List<String> euErrors}) = _$_ApiError;
+  const _ApiError._() : super._();
 
-  factory _ApiMultipleError.fromJson(Map<String, dynamic> json) =
-      _$_ApiMultipleError.fromJson;
+  factory _ApiError.fromJson(Map<String, dynamic> json) = _$_ApiError.fromJson;
 
   @override
-  List<String> get errors;
+  List<String> get ruErrors;
+  @override
+  List<String> get euErrors;
   @override
   @JsonKey(ignore: true)
-  _$$_ApiMultipleErrorCopyWith<_$_ApiMultipleError> get copyWith =>
+  _$$_ApiErrorCopyWith<_$_ApiError> get copyWith =>
       throw _privateConstructorUsedError;
 }

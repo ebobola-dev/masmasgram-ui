@@ -13,6 +13,7 @@ class CustomTextField extends StatefulWidget {
   final int? maxLength;
   final TextInputAction? textInputAction;
   final void Function(String)? onSubmitted;
+  final bool enabled;
   const CustomTextField({
     super.key,
     this.controller,
@@ -23,6 +24,7 @@ class CustomTextField extends StatefulWidget {
     this.maxLength,
     this.textInputAction,
     this.onSubmitted,
+    this.enabled = true,
   });
 
   @override
@@ -58,11 +60,14 @@ class _CustomTextFieldState extends State<CustomTextField> {
     return TextField(
       obscureText: widget.obscureText,
       controller: widget.controller,
-      style: Theme.of(context).textTheme.bodyMedium,
+      style: Theme.of(context).textTheme.bodyMedium!.copyWith(
+            color: widget.enabled ? null : Colors.grey,
+          ),
       inputFormatters: widget.inputFormatters,
       maxLength: widget.maxLength,
       textInputAction: widget.textInputAction,
       onSubmitted: widget.onSubmitted,
+      enabled: widget.enabled,
       decoration: InputDecoration(
         counterText: '',
         labelText: widget.labelText,

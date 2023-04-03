@@ -1,6 +1,9 @@
 class IconPaths {
   static const cross_circle = "assets/icons/cross-circle.svg";
   static const eye = "assets/icons/eye.svg";
+  static const error = "assets/icons/error.svg";
+  static const success = "assets/icons/check.svg";
+  static const warning = "assets/icons/triangle-warning.svg";
 }
 
 class ImagePaths {

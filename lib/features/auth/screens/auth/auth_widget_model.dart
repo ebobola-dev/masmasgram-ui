@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:elementary/elementary.dart';
 import 'package:flutter/material.dart';
+import 'package:masmasgram_ui/assets/colors/theme_colors.dart';
 import 'package:masmasgram_ui/assets/strings/animations.dart';
 import 'package:masmasgram_ui/features/auth/domian/entity/auth_mode.dart';
 import 'package:masmasgram_ui/features/auth/domian/entity/start_animations.dart';
@@ -9,9 +10,11 @@ import 'package:masmasgram_ui/features/auth/domian/repositoties/auth_repository.
 import 'package:masmasgram_ui/features/auth/screens/auth/auth_screen.dart';
 import 'package:masmasgram_ui/features/auth/screens/auth/auth_model.dart';
 import 'package:masmasgram_ui/features/common/domian/entity/models_settings.dart';
+import 'package:masmasgram_ui/features/common/domian/entity/registation_request/registation_request_result.dart';
 import 'package:masmasgram_ui/features/common/domian/providers/models_settings_provider.dart';
 import 'package:masmasgram_ui/features/common/domian/repositories/models_settings.dart';
 import 'package:masmasgram_ui/features/common/services/api_client.dart';
+import 'package:masmasgram_ui/features/common/widgets/my_snackbar.dart';
 import 'package:masmasgram_ui/utils/number.dart';
 import 'package:masmasgram_ui/utils/screen_sizes.dart';
 import 'package:provider/provider.dart';
@@ -28,6 +31,8 @@ class AuthWM extends WidgetModel<AuthScreen, AuthModel>
   late final AuthStartAnimations _startAnimations;
   late final AnimationController _passwordEyeLineController;
   late final Animation<double> _passwordEyeLineAnimation;
+  late final AnimationController _authButtonBorderController;
+  late final Animation<double> _authButtonBorderAnimation;
   late final StateNotifier<AuthMode> _authMode;
   late final StateNotifier<bool> _passwordIsEmpty;
   late final StateNotifier<bool> _showPassword;
@@ -35,6 +40,7 @@ class AuthWM extends WidgetModel<AuthScreen, AuthModel>
   late final StateNotifier<bool> _canAuth;
   late final StateNotifier<bool> _usernameTooShort;
   late final StateNotifier<bool> _passwordTooShort;
+  late final StateNotifier<bool> _authInProgress;
   final TextEditingController _usernameFieldController =
       TextEditingController();
   final TextEditingController _passwordFieldController =
@@ -53,6 +59,7 @@ class AuthWM extends WidgetModel<AuthScreen, AuthModel>
     _canAuth = StateNotifier<bool>(initValue: false);
     _usernameTooShort = StateNotifier<bool>(initValue: true);
     _passwordTooShort = StateNotifier<bool>(initValue: true);
+    _authInProgress = StateNotifier<bool>(initValue: false);
     _startAnimations = AuthStartAnimations(vsync: this);
 
     _passwordEyeLineController = AnimationController(
@@ -68,6 +75,18 @@ class AuthWM extends WidgetModel<AuthScreen, AuthModel>
     ));
     //? Так как пароль скрыт по дефолту, сразу рисуем линию, зачеркивающую глаз
     _passwordEyeLineController.forward();
+
+    _authButtonBorderController = AnimationController(
+      vsync: this,
+      duration: Animations.verySlowSpeed,
+    );
+    _authButtonBorderAnimation = Tween(
+      begin: 0.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(
+      parent: _authButtonBorderController,
+      curve: Animations.curve,
+    ));
 
     _usernameFieldController.addListener(() {
       _checkCanAuth();
@@ -87,24 +106,12 @@ class AuthWM extends WidgetModel<AuthScreen, AuthModel>
 
     _startAnimations.forward();
 
-    model.errorStream.listen((error) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          behavior: SnackBarBehavior.floating,
-          margin: EdgeInsets.only(bottom: getScreenSize(context).height - 150),
-          content: Text(
-            error,
-            style: Theme.of(context).textTheme.bodySmall,
-          ),
-        ),
-      );
-    });
-
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       final modelsSettings = await model.initializeModelsSettings();
       if (modelsSettings is ModelsSettings) {
         _modelsSettings.accept(modelsSettings);
         context.read<ModelsSettingsProvider>().set(modelsSettings);
+        _checkCanAuth();
       } else {
         log(
           'Error on initialization Models Settings: $modelsSettings',
@@ -185,6 +192,9 @@ class AuthWM extends WidgetModel<AuthScreen, AuthModel>
   Animation<double> get passwordEyeLineAnimation => _passwordEyeLineAnimation;
 
   @override
+  Animation<double> get authButtonBorderAnimation => _authButtonBorderAnimation;
+
+  @override
   StateNotifier<AuthMode> get authMode => _authMode;
 
   @override
@@ -204,6 +214,9 @@ class AuthWM extends WidgetModel<AuthScreen, AuthModel>
 
   @override
   StateNotifier<bool> get passwordTooShort => _passwordTooShort;
+
+  @override
+  StateNotifier<bool> get authInProgress => _authInProgress;
 
   void _checkCanAuth() {
     final username = _usernameFieldController.text;
@@ -266,22 +279,71 @@ class AuthWM extends WidgetModel<AuthScreen, AuthModel>
 
   @override
   Future<void> tapOnAuthButton() async {
-    //if (!_canAuth.value!) return;
+    if (!_canAuth.value!) return;
     final username = _usernameFieldController.text;
     final password = _passwordFieldController.text;
     if (_authMode.value! == AuthMode.signUp) {
       final fullname = _fullnameFieldController.text;
-      await model.registration(
+      _authInProgress.accept(true);
+      _authButtonBorderController.repeat();
+      final registrationResult = await model.registration(
         username: username,
         password: password,
         fullname: fullname,
       );
-      //TODO
+      _authInProgress.accept(false);
+
+      _authButtonBorderController.stop();
+      if (registrationResult is SuccessfullyRegistered) {
+        //* Registration success
+        MySnackBar.showSuccess(
+          context,
+          message: 'Successfully registered',
+          duration: const Duration(seconds: 5),
+          mainButton: Material(
+            borderRadius: BorderRadius.circular(7.5),
+            color: snackBarButtonColor,
+            child: InkWell(
+              onTap: () {
+                authMode.accept(AuthMode.signIn);
+                //TODO log in
+              },
+              borderRadius: BorderRadius.circular(7.5),
+              child: Padding(
+                padding: const EdgeInsets.all(10.0),
+                child: Text(
+                  'Sign In',
+                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                        color: successSnackBarColor,
+                        fontWeight: FontWeight.bold,
+                      ),
+                ),
+              ),
+            ),
+          ),
+        );
+      } else if (registrationResult is RegistrationFailed) {
+        //* Registration failed
+        final euErrors = registrationResult.error.euErrors;
+        var errorMessage = '';
+        for (var item in euErrors.asMap().entries) {
+          errorMessage += '${item.value}';
+          if (item.key != euErrors.length - 1) {
+            errorMessage += '\n';
+          }
+        }
+        MySnackBar.showError(context, error: errorMessage);
+        //* ------------------
+      }
     } else {
+      _authInProgress.accept(true);
+      _authButtonBorderController.repeat();
       await model.login(
         username: username,
         password: password,
       );
+      _authInProgress.accept(false);
+      _authButtonBorderController.stop();
       //TODO
     }
   }
@@ -307,6 +369,7 @@ abstract class IAuthWM extends IWidgetModel {
 
   AuthStartAnimations get startAnimations;
   Animation<double> get passwordEyeLineAnimation;
+  Animation<double> get authButtonBorderAnimation;
 
   StateNotifier<AuthMode> get authMode;
   StateNotifier<bool> get passwordIsEmpty;
@@ -315,6 +378,7 @@ abstract class IAuthWM extends IWidgetModel {
   StateNotifier<bool> get canAuth;
   StateNotifier<bool> get usernameTooShort;
   StateNotifier<bool> get passwordTooShort;
+  StateNotifier<bool> get authInProgress;
 
   void tapOnPasswordEye();
   void changeAuthMode();

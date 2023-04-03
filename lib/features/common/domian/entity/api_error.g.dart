@@ -6,23 +6,15 @@ part of 'api_error.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-_$_ApiSingleError _$$_ApiSingleErrorFromJson(Map<String, dynamic> json) =>
-    _$_ApiSingleError(
-      error: json['error'] as String,
+_$_ApiError _$$_ApiErrorFromJson(Map<String, dynamic> json) => _$_ApiError(
+      ruErrors:
+          (json['ru_errors'] as List<dynamic>).map((e) => e as String).toList(),
+      euErrors:
+          (json['eu_errors'] as List<dynamic>).map((e) => e as String).toList(),
     );
 
-Map<String, dynamic> _$$_ApiSingleErrorToJson(_$_ApiSingleError instance) =>
+Map<String, dynamic> _$$_ApiErrorToJson(_$_ApiError instance) =>
     <String, dynamic>{
-      'error': instance.error,
-    };
-
-_$_ApiMultipleError _$$_ApiMultipleErrorFromJson(Map<String, dynamic> json) =>
-    _$_ApiMultipleError(
-      errors:
-          (json['errors'] as List<dynamic>).map((e) => e as String).toList(),
-    );
-
-Map<String, dynamic> _$$_ApiMultipleErrorToJson(_$_ApiMultipleError instance) =>
-    <String, dynamic>{
-      'errors': instance.errors,
+      'ru_errors': instance.ruErrors,
+      'eu_errors': instance.euErrors,
     };
