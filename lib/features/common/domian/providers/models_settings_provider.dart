@@ -1,4 +1,4 @@
-import 'package:masmasgram_ui/features/common/domian/entity/models_settings.dart';
+import 'package:masmasgram_ui/features/common/domian/entity/models_settings/models_settings.dart';
 
 class ModelsSettingsProvider {
   ModelsSettings? _value;

@@ -3,9 +3,10 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:masmasgram_ui/assets/strings/dev.dart';
 import 'package:masmasgram_ui/assets/strings/urls.dart';
-import 'package:masmasgram_ui/features/common/domian/entity/api_error.dart';
+import 'package:masmasgram_ui/features/common/domian/entity/api_errors/api_error.dart';
+import 'package:masmasgram_ui/features/common/domian/entity/login_request/login_request_result.dart';
 
-import 'package:masmasgram_ui/features/common/domian/entity/models_settings.dart';
+import 'package:masmasgram_ui/features/common/domian/entity/models_settings/models_settings.dart';
 import 'package:masmasgram_ui/features/common/domian/entity/registation_request/registation_request_result.dart';
 
 class ApiClient {
@@ -24,20 +25,16 @@ class ApiClient {
       final responseData = response.data;
       log(
         'code: ${response.statusCode}, body: $responseData',
-        name: 'ApiClient',
+        name: 'ApiClient | _handleResponseError',
       );
-      switch (response.statusCode) {
-        case 200:
-          return null;
-        case 400:
-          return ApiError.fromJson(responseData);
-        case 500:
-          return ApiError.fromJson(responseData);
+      if (response.statusCode == 200) {
+        return null;
+      } else {
+        return ApiError.fromJson(responseData);
       }
     } catch (error) {
       return unknownError;
     }
-    return null;
   }
 
   Future<dynamic> getModelsSettings() async {
@@ -86,12 +83,39 @@ class ApiClient {
       return SuccessfullyRegistered.fromJson(response.data);
     } on DioError catch (dioError) {
       log(
-        '[registration fetch] ERROR',
-        name: 'ApiClient',
+        'ERROR',
+        name: 'ApiClient | registration',
       );
       final error = _handleResponseError(dioError.response);
       //? _handleResponseError can return [null] if status code is 200
       return RegistrationFailed(error: error ?? unknownError);
+    }
+  }
+
+  Future<LoginRequestResult> login({
+    required String username,
+    required String password,
+  }) async {
+    try {
+      if (requestFakeDelay) {
+        await Future.delayed(requestFakeDelayDuration);
+      }
+      final response = await _dio.post(
+        Urls.login,
+        data: {
+          'username': username,
+          'password': password,
+        },
+      );
+      return SuccessfullyLoggedIn.fromJson(response.data);
+    } on DioError catch (dioError) {
+      log(
+        'ERROR',
+        name: 'ApiClient | login',
+      );
+      final error = _handleResponseError(dioError.response);
+      //? _handleResponseError can return [null] if status code is 200
+      return LoginFailed(error: error ?? unknownError);
     }
   }
 }

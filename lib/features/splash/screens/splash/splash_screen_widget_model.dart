@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:masmasgram_ui/assets/strings/animations.dart';
 import 'package:masmasgram_ui/assets/strings/next_button.dart';
 import 'package:masmasgram_ui/features/auth/screens/auth/auth_screen.dart';
+import 'package:masmasgram_ui/features/common/domian/repositories/shared_pref.dart';
 import 'package:masmasgram_ui/features/splash/domian/entity/start_animations.dart';
 import 'package:masmasgram_ui/features/splash/screens/splash/splash_screen.dart';
 import 'package:masmasgram_ui/features/splash/screens/splash/splash_screen_model.dart';
@@ -93,10 +94,12 @@ class SplashScreenWM extends WidgetModel<SplashScreen, SplashScreenModel>
   Animation<Color?> get buttonTextColorAnimation => _buttonTextColorAnimation;
 
   @override
-  void tapOnNext() {
+  Future<void> tapOnNext() async {
     final newPage = model.swipe();
     if (newPage == -1) {
       //? Swipe to auth screen
+
+      await SharedPrefRepository.setFirstLaunch();
       animatedSwitchPage(
         context,
         AuthScreen(),
@@ -144,5 +147,5 @@ abstract class ISplashScreenWM extends IWidgetModel {
   StateNotifier<int> get pageState;
   Animation<Color?> get buttonTextColorAnimation;
 
-  void tapOnNext();
+  Future<void> tapOnNext();
 }

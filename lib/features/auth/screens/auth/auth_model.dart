@@ -1,29 +1,30 @@
 import 'dart:async';
+import 'dart:developer';
 
 import 'package:elementary/elementary.dart';
 import 'package:masmasgram_ui/features/auth/domian/entity/auth_mode.dart';
 import 'package:masmasgram_ui/features/auth/domian/repositoties/auth_repository.dart';
+import 'package:masmasgram_ui/features/common/domian/entity/login_request/login_request_result.dart';
 import 'package:masmasgram_ui/features/common/domian/entity/registation_request/registation_request_result.dart';
 import 'package:masmasgram_ui/features/common/domian/repositories/models_settings.dart';
+import 'package:masmasgram_ui/features/common/domian/repositories/secure_storage.dart';
 
 class AuthModel extends ElementaryModel {
   final ModelsSettingsRepository _modelsSettingsRepo;
   final AuthRepository _authRepository;
-  // final StreamController<String> _errorStream = StreamController<String>();
-  // final StreamController<String> _successStream = StreamController<String>();
+  final SecureStorageRepository _secureStorageRepository;
   String? _token;
   AuthMode _currentAuthMode = AuthMode.signUp;
 
   AuthModel({
     required ModelsSettingsRepository modelsSettingsRepository,
     required AuthRepository authRepository,
+    required SecureStorageRepository secureStorageRepository,
   })  : _modelsSettingsRepo = modelsSettingsRepository,
-        _authRepository = authRepository;
+        _authRepository = authRepository,
+        _secureStorageRepository = secureStorageRepository;
 
-  String? get token => _token;
   AuthMode get currentAuthMode => _currentAuthMode;
-  // Stream<String> get errorStream => _errorStream.stream.asBroadcastStream();
-  // Stream<String> get successStream => _successStream.stream.asBroadcastStream();
 
   Future<dynamic> initializeModelsSettings() async {
     final modelsSettings = await _modelsSettingsRepo.get();
@@ -49,26 +50,23 @@ class AuthModel extends ElementaryModel {
       password: password,
       fullname: fullname,
     );
-    // if (registrationResult is SuccessfullyRegistered) {
-    //   //* Registration success
-    // } else if (registrationResult is RegistrationFailed) {
-    //   //* Registration failed
-    //   final euErrors = registrationResult.error.euErrors;
-    //   var errorMessage = '';
-    //   for (var item in euErrors.asMap().entries) {
-    //     errorMessage += '${item.value}';
-    //     if (item.key != euErrors.length - 1) {
-    //       errorMessage += '\n';
-    //     }
-    //   }
-    //   _errorStream.add(errorMessage);
-    // }
   }
 
-  Future<void> login({
+  Future<LoginRequestResult> login({
     required String username,
     required String password,
   }) async {
-    //TODO login request
+    final loginResult = await _authRepository.login(
+      username: username,
+      password: password,
+    );
+    if (loginResult is SuccessfullyLoggedIn) {
+      log(
+        'Successfully logged in, token -> ${loginResult.token}',
+        name: 'AuthModel | login',
+      );
+      _secureStorageRepository.writeToken(loginResult.token);
+    }
+    return loginResult;
   }
 }

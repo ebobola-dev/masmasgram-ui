@@ -9,10 +9,12 @@ import 'package:masmasgram_ui/features/auth/domian/entity/start_animations.dart'
 import 'package:masmasgram_ui/features/auth/domian/repositoties/auth_repository.dart';
 import 'package:masmasgram_ui/features/auth/screens/auth/auth_screen.dart';
 import 'package:masmasgram_ui/features/auth/screens/auth/auth_model.dart';
-import 'package:masmasgram_ui/features/common/domian/entity/models_settings.dart';
+import 'package:masmasgram_ui/features/common/domian/entity/login_request/login_request_result.dart';
+import 'package:masmasgram_ui/features/common/domian/entity/models_settings/models_settings.dart';
 import 'package:masmasgram_ui/features/common/domian/entity/registation_request/registation_request_result.dart';
 import 'package:masmasgram_ui/features/common/domian/providers/models_settings_provider.dart';
 import 'package:masmasgram_ui/features/common/domian/repositories/models_settings.dart';
+import 'package:masmasgram_ui/features/common/domian/repositories/secure_storage.dart';
 import 'package:masmasgram_ui/features/common/services/api_client.dart';
 import 'package:masmasgram_ui/features/common/widgets/my_snackbar.dart';
 import 'package:masmasgram_ui/utils/number.dart';
@@ -23,6 +25,7 @@ AuthWM createAuthWM(BuildContext context) => AuthWM(AuthModel(
       modelsSettingsRepository:
           ModelsSettingsRepository(context.read<ApiClient>()),
       authRepository: AuthRepository(context.read<ApiClient>()),
+      secureStorageRepository: SecureStorageRepository(),
     ));
 
 class AuthWM extends WidgetModel<AuthScreen, AuthModel>
@@ -107,17 +110,7 @@ class AuthWM extends WidgetModel<AuthScreen, AuthModel>
     _startAnimations.forward();
 
     WidgetsBinding.instance.addPostFrameCallback((_) async {
-      final modelsSettings = await model.initializeModelsSettings();
-      if (modelsSettings is ModelsSettings) {
-        _modelsSettings.accept(modelsSettings);
-        context.read<ModelsSettingsProvider>().set(modelsSettings);
-        _checkCanAuth();
-      } else {
-        log(
-          'Error on initialization Models Settings: $modelsSettings',
-          name: 'Auth WM',
-        );
-      }
+      _initModelsSettings();
     });
 
     super.initWidgetModel();
@@ -128,6 +121,20 @@ class AuthWM extends WidgetModel<AuthScreen, AuthModel>
     _startAnimations.dispose();
     _passwordEyeLineController.dispose();
     super.dispose();
+  }
+
+  Future<void> _initModelsSettings() async {
+    final modelsSettings = await model.initializeModelsSettings();
+    if (modelsSettings is ModelsSettings) {
+      _modelsSettings.accept(modelsSettings);
+      context.read<ModelsSettingsProvider>().set(modelsSettings);
+      _checkCanAuth();
+    } else {
+      log(
+        'Error on initialization Models Settings: $modelsSettings',
+        name: 'Auth WM',
+      );
+    }
   }
 
   @override
@@ -261,6 +268,100 @@ class AuthWM extends WidgetModel<AuthScreen, AuthModel>
     _canAuth.accept(canAuth);
   }
 
+  Future<void> _setAuthInProgress(bool isProgress) async {
+    _authInProgress.accept(isProgress);
+    if (isProgress) {
+      await _authButtonBorderController.repeat();
+    } else {
+      _authButtonBorderController.stop();
+    }
+  }
+
+  Future<void> _registation() async {
+    final username = _usernameFieldController.text;
+    final password = _passwordFieldController.text;
+    final fullname = _fullnameFieldController.text;
+    _setAuthInProgress(true);
+    final registrationResult = await model.registration(
+      username: username,
+      password: password,
+      fullname: fullname,
+    );
+    _setAuthInProgress(false);
+    if (registrationResult is SuccessfullyRegistered) {
+      //* Registration success
+      MySnackBar.showSuccess(
+        context,
+        message: 'Successfully registered',
+        duration: const Duration(seconds: 5),
+        mainButton: Material(
+          borderRadius: BorderRadius.circular(7.5),
+          color: snackBarButtonColor,
+          child: InkWell(
+            onTap: () async {
+              authMode.accept(AuthMode.signIn);
+              await _login();
+            },
+            borderRadius: BorderRadius.circular(7.5),
+            child: Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Text(
+                'Sign In',
+                style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                      color: successSnackBarColor,
+                      fontWeight: FontWeight.bold,
+                    ),
+              ),
+            ),
+          ),
+        ),
+      );
+    } else if (registrationResult is RegistrationFailed) {
+      //* Registration failed
+      final euErrors = registrationResult.error.euErrors;
+      var errorMessage = '';
+      for (var item in euErrors.asMap().entries) {
+        errorMessage += '${item.value}';
+        if (item.key != euErrors.length - 1) {
+          errorMessage += '\n';
+        }
+      }
+      MySnackBar.showError(context, error: errorMessage);
+      //* ------------------
+    }
+  }
+
+  Future<void> _login() async {
+    final username = _usernameFieldController.text;
+    final password = _passwordFieldController.text;
+    _setAuthInProgress(true);
+    final loginResult = await model.login(
+      username: username,
+      password: password,
+    );
+    _setAuthInProgress(false);
+    if (loginResult is SuccessfullyLoggedIn) {
+      //* Login success
+      MySnackBar.showSuccess(
+        context,
+        message: 'Successfully logged in',
+        duration: const Duration(seconds: 3),
+      );
+    } else if (loginResult is LoginFailed) {
+      //* Login failed
+      final euErrors = loginResult.error.euErrors;
+      var errorMessage = '';
+      for (var item in euErrors.asMap().entries) {
+        errorMessage += '${item.value}';
+        if (item.key != euErrors.length - 1) {
+          errorMessage += '\n';
+        }
+      }
+      MySnackBar.showError(context, error: errorMessage);
+      //* ------------------
+    }
+  }
+
   @override
   void tapOnPasswordEye() {
     if (_showPassword.value!) {
@@ -280,71 +381,10 @@ class AuthWM extends WidgetModel<AuthScreen, AuthModel>
   @override
   Future<void> tapOnAuthButton() async {
     if (!_canAuth.value!) return;
-    final username = _usernameFieldController.text;
-    final password = _passwordFieldController.text;
     if (_authMode.value! == AuthMode.signUp) {
-      final fullname = _fullnameFieldController.text;
-      _authInProgress.accept(true);
-      _authButtonBorderController.repeat();
-      final registrationResult = await model.registration(
-        username: username,
-        password: password,
-        fullname: fullname,
-      );
-      _authInProgress.accept(false);
-
-      _authButtonBorderController.stop();
-      if (registrationResult is SuccessfullyRegistered) {
-        //* Registration success
-        MySnackBar.showSuccess(
-          context,
-          message: 'Successfully registered',
-          duration: const Duration(seconds: 5),
-          mainButton: Material(
-            borderRadius: BorderRadius.circular(7.5),
-            color: snackBarButtonColor,
-            child: InkWell(
-              onTap: () {
-                authMode.accept(AuthMode.signIn);
-                //TODO log in
-              },
-              borderRadius: BorderRadius.circular(7.5),
-              child: Padding(
-                padding: const EdgeInsets.all(10.0),
-                child: Text(
-                  'Sign In',
-                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
-                        color: successSnackBarColor,
-                        fontWeight: FontWeight.bold,
-                      ),
-                ),
-              ),
-            ),
-          ),
-        );
-      } else if (registrationResult is RegistrationFailed) {
-        //* Registration failed
-        final euErrors = registrationResult.error.euErrors;
-        var errorMessage = '';
-        for (var item in euErrors.asMap().entries) {
-          errorMessage += '${item.value}';
-          if (item.key != euErrors.length - 1) {
-            errorMessage += '\n';
-          }
-        }
-        MySnackBar.showError(context, error: errorMessage);
-        //* ------------------
-      }
+      await _registation();
     } else {
-      _authInProgress.accept(true);
-      _authButtonBorderController.repeat();
-      await model.login(
-        username: username,
-        password: password,
-      );
-      _authInProgress.accept(false);
-      _authButtonBorderController.stop();
-      //TODO
+      await _login();
     }
   }
 }
