@@ -5,18 +5,21 @@ import 'package:flutter/material.dart';
 import 'package:masmasgram_ui/assets/colors/theme_colors.dart';
 import 'package:masmasgram_ui/assets/strings/animations.dart';
 import 'package:masmasgram_ui/features/auth/domian/entity/auth_mode.dart';
+import 'package:masmasgram_ui/features/auth/domian/entity/login_result/login_result.dart';
+import 'package:masmasgram_ui/features/auth/domian/entity/registation_result/registation_result.dart';
 import 'package:masmasgram_ui/features/auth/domian/entity/start_animations.dart';
-import 'package:masmasgram_ui/features/auth/domian/repositoties/auth_repository.dart';
+import 'package:masmasgram_ui/features/common/domian/entity/request_result/request_result.dart';
+import 'package:masmasgram_ui/features/common/domian/repositories/auth_repository.dart';
 import 'package:masmasgram_ui/features/auth/screens/auth/auth_screen.dart';
 import 'package:masmasgram_ui/features/auth/screens/auth/auth_model.dart';
-import 'package:masmasgram_ui/features/common/domian/entity/login_request/login_request_result.dart';
 import 'package:masmasgram_ui/features/common/domian/entity/models_settings/models_settings.dart';
-import 'package:masmasgram_ui/features/common/domian/entity/registation_request/registation_request_result.dart';
 import 'package:masmasgram_ui/features/common/domian/providers/models_settings_provider.dart';
 import 'package:masmasgram_ui/features/common/domian/repositories/models_settings.dart';
 import 'package:masmasgram_ui/features/common/domian/repositories/secure_storage.dart';
 import 'package:masmasgram_ui/features/common/services/api_client.dart';
 import 'package:masmasgram_ui/features/common/widgets/my_snackbar.dart';
+import 'package:masmasgram_ui/features/navigation/screens/navigation/navigation_screen.dart';
+import 'package:masmasgram_ui/utils/animated_switch_page.dart';
 import 'package:masmasgram_ui/utils/number.dart';
 import 'package:masmasgram_ui/utils/screen_sizes.dart';
 import 'package:provider/provider.dart';
@@ -288,7 +291,7 @@ class AuthWM extends WidgetModel<AuthScreen, AuthModel>
       fullname: fullname,
     );
     _setAuthInProgress(false);
-    if (registrationResult is SuccessfullyRegistered) {
+    if (registrationResult is SuccessfullRequest<RegistrationResult>) {
       //* Registration success
       MySnackBar.showSuccess(
         context,
@@ -316,7 +319,7 @@ class AuthWM extends WidgetModel<AuthScreen, AuthModel>
           ),
         ),
       );
-    } else if (registrationResult is RegistrationFailed) {
+    } else if (registrationResult is RequestFailed) {
       //* Registration failed
       final euErrors = registrationResult.error.euErrors;
       var errorMessage = '';
@@ -340,14 +343,21 @@ class AuthWM extends WidgetModel<AuthScreen, AuthModel>
       password: password,
     );
     _setAuthInProgress(false);
-    if (loginResult is SuccessfullyLoggedIn) {
+    if (loginResult is SuccessfullRequest<LoginResult>) {
       //* Login success
       MySnackBar.showSuccess(
         context,
         message: 'Successfully logged in',
         duration: const Duration(seconds: 3),
       );
-    } else if (loginResult is LoginFailed) {
+      animatedSwitchPage(
+        context,
+        NavigationScreen(),
+        routeAnimation: RouteAnimation.slideRight,
+        clearNavigator: true,
+      );
+      //* ------------------
+    } else if (loginResult is RequestFailed) {
       //* Login failed
       final euErrors = loginResult.error.euErrors;
       var errorMessage = '';

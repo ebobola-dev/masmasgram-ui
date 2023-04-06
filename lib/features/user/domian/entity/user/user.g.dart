@@ -11,7 +11,7 @@ _$_User _$$_UserFromJson(Map<String, dynamic> json) => _$_User(
       username: json['username'] as String,
       fullname: json['fullname'] as String?,
       isOnline: json['is_online'] as bool,
-      postCount: json['post_count'] as int,
+      postsCount: json['posts_count'] as int,
       followersCount: json['followers_count'] as int,
       followsCount: json['follows_count'] as int,
     );
@@ -21,7 +21,7 @@ Map<String, dynamic> _$$_UserToJson(_$_User instance) => <String, dynamic>{
       'username': instance.username,
       'fullname': instance.fullname,
       'is_online': instance.isOnline,
-      'post_count': instance.postCount,
+      'posts_count': instance.postsCount,
       'followers_count': instance.followersCount,
       'follows_count': instance.followsCount,
     };

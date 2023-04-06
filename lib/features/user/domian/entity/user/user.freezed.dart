@@ -24,7 +24,7 @@ mixin _$User {
   String get username => throw _privateConstructorUsedError;
   String? get fullname => throw _privateConstructorUsedError;
   bool get isOnline => throw _privateConstructorUsedError;
-  int get postCount => throw _privateConstructorUsedError;
+  int get postsCount => throw _privateConstructorUsedError;
   int get followersCount => throw _privateConstructorUsedError;
   int get followsCount => throw _privateConstructorUsedError;
 
@@ -43,7 +43,7 @@ abstract class $UserCopyWith<$Res> {
       String username,
       String? fullname,
       bool isOnline,
-      int postCount,
+      int postsCount,
       int followersCount,
       int followsCount});
 }
@@ -65,7 +65,7 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
     Object? username = null,
     Object? fullname = freezed,
     Object? isOnline = null,
-    Object? postCount = null,
+    Object? postsCount = null,
     Object? followersCount = null,
     Object? followsCount = null,
   }) {
@@ -86,9 +86,9 @@ class _$UserCopyWithImpl<$Res, $Val extends User>
           ? _value.isOnline
           : isOnline // ignore: cast_nullable_to_non_nullable
               as bool,
-      postCount: null == postCount
-          ? _value.postCount
-          : postCount // ignore: cast_nullable_to_non_nullable
+      postsCount: null == postsCount
+          ? _value.postsCount
+          : postsCount // ignore: cast_nullable_to_non_nullable
               as int,
       followersCount: null == followersCount
           ? _value.followersCount
@@ -113,7 +113,7 @@ abstract class _$$_UserCopyWith<$Res> implements $UserCopyWith<$Res> {
       String username,
       String? fullname,
       bool isOnline,
-      int postCount,
+      int postsCount,
       int followersCount,
       int followsCount});
 }
@@ -131,7 +131,7 @@ class __$$_UserCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res, _$_User>
     Object? username = null,
     Object? fullname = freezed,
     Object? isOnline = null,
-    Object? postCount = null,
+    Object? postsCount = null,
     Object? followersCount = null,
     Object? followsCount = null,
   }) {
@@ -152,9 +152,9 @@ class __$$_UserCopyWithImpl<$Res> extends _$UserCopyWithImpl<$Res, _$_User>
           ? _value.isOnline
           : isOnline // ignore: cast_nullable_to_non_nullable
               as bool,
-      postCount: null == postCount
-          ? _value.postCount
-          : postCount // ignore: cast_nullable_to_non_nullable
+      postsCount: null == postsCount
+          ? _value.postsCount
+          : postsCount // ignore: cast_nullable_to_non_nullable
               as int,
       followersCount: null == followersCount
           ? _value.followersCount
@@ -176,7 +176,7 @@ class _$_User extends _User {
       required this.username,
       this.fullname,
       required this.isOnline,
-      required this.postCount,
+      required this.postsCount,
       required this.followersCount,
       required this.followsCount})
       : super._();
@@ -192,7 +192,7 @@ class _$_User extends _User {
   @override
   final bool isOnline;
   @override
-  final int postCount;
+  final int postsCount;
   @override
   final int followersCount;
   @override
@@ -200,7 +200,7 @@ class _$_User extends _User {
 
   @override
   String toString() {
-    return 'User(id: $id, username: $username, fullname: $fullname, isOnline: $isOnline, postCount: $postCount, followersCount: $followersCount, followsCount: $followsCount)';
+    return 'User(id: $id, username: $username, fullname: $fullname, isOnline: $isOnline, postsCount: $postsCount, followersCount: $followersCount, followsCount: $followsCount)';
   }
 
   @override
@@ -215,8 +215,8 @@ class _$_User extends _User {
                 other.fullname == fullname) &&
             (identical(other.isOnline, isOnline) ||
                 other.isOnline == isOnline) &&
-            (identical(other.postCount, postCount) ||
-                other.postCount == postCount) &&
+            (identical(other.postsCount, postsCount) ||
+                other.postsCount == postsCount) &&
             (identical(other.followersCount, followersCount) ||
                 other.followersCount == followersCount) &&
             (identical(other.followsCount, followsCount) ||
@@ -226,7 +226,7 @@ class _$_User extends _User {
   @JsonKey(ignore: true)
   @override
   int get hashCode => Object.hash(runtimeType, id, username, fullname, isOnline,
-      postCount, followersCount, followsCount);
+      postsCount, followersCount, followsCount);
 
   @JsonKey(ignore: true)
   @override
@@ -248,7 +248,7 @@ abstract class _User extends User {
       required final String username,
       final String? fullname,
       required final bool isOnline,
-      required final int postCount,
+      required final int postsCount,
       required final int followersCount,
       required final int followsCount}) = _$_User;
   _User._() : super._();
@@ -264,7 +264,7 @@ abstract class _User extends User {
   @override
   bool get isOnline;
   @override
-  int get postCount;
+  int get postsCount;
   @override
   int get followersCount;
   @override

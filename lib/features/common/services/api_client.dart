@@ -3,16 +3,26 @@ import 'dart:developer';
 import 'package:dio/dio.dart';
 import 'package:masmasgram_ui/assets/strings/dev.dart';
 import 'package:masmasgram_ui/assets/strings/urls.dart';
+import 'package:masmasgram_ui/features/auth/domian/entity/login_result/login_result.dart';
+import 'package:masmasgram_ui/features/auth/domian/entity/registation_result/registation_result.dart';
 import 'package:masmasgram_ui/features/common/domian/entity/api_errors/api_error.dart';
-import 'package:masmasgram_ui/features/common/domian/entity/login_request/login_request_result.dart';
 
 import 'package:masmasgram_ui/features/common/domian/entity/models_settings/models_settings.dart';
-import 'package:masmasgram_ui/features/common/domian/entity/registation_request/registation_request_result.dart';
+import 'package:masmasgram_ui/features/common/domian/entity/request_result/request_result.dart';
+import 'package:masmasgram_ui/features/user/domian/entity/user/user.dart';
 
 class ApiClient {
   final Dio _dio;
 
   const ApiClient(this._dio);
+
+  void setAuthToken(String authToken) {
+    _dio.options.headers["Authorization"] = "Bearer $authToken";
+  }
+
+  void removeAuthToken() {
+    _dio.options.headers.remove("Authorization");
+  }
 
   ApiError? _handleResponseError(Response? response) {
     try {
@@ -63,7 +73,7 @@ class ApiClient {
     }
   }
 
-  Future<RegistrationRequestResult> registration({
+  Future<RequestResult> registration({
     required String username,
     required String password,
     required String fullname,
@@ -80,7 +90,9 @@ class ApiClient {
           'fullname': fullname,
         }),
       );
-      return SuccessfullyRegistered.fromJson(response.data);
+      return SuccessfullRequest<RegistrationResult>(
+        data: RegistrationResult.fromJson(response.data),
+      );
     } on DioError catch (dioError) {
       log(
         'ERROR',
@@ -88,11 +100,11 @@ class ApiClient {
       );
       final error = _handleResponseError(dioError.response);
       //? _handleResponseError can return [null] if status code is 200
-      return RegistrationFailed(error: error ?? unknownError);
+      return RequestFailed(error: error ?? unknownError);
     }
   }
 
-  Future<LoginRequestResult> login({
+  Future<RequestResult> login({
     required String username,
     required String password,
   }) async {
@@ -107,7 +119,9 @@ class ApiClient {
           'password': password,
         },
       );
-      return SuccessfullyLoggedIn.fromJson(response.data);
+      return SuccessfullRequest<LoginResult>(
+        data: LoginResult.fromJson(response.data),
+      );
     } on DioError catch (dioError) {
       log(
         'ERROR',
@@ -115,7 +129,27 @@ class ApiClient {
       );
       final error = _handleResponseError(dioError.response);
       //? _handleResponseError can return [null] if status code is 200
-      return LoginFailed(error: error ?? unknownError);
+      return RequestFailed(error: error ?? unknownError);
+    }
+  }
+
+  Future<RequestResult> getMyUserData() async {
+    try {
+      if (requestFakeDelay) {
+        await Future.delayed(requestFakeDelayDuration);
+      }
+      final response = await _dio.get(Urls.getMyUserData);
+      return SuccessfullRequest<User>(
+        data: User.fromJson(response.data),
+      );
+    } on DioError catch (dioError) {
+      log(
+        'ERROR',
+        name: 'ApiClient | getMyUserData',
+      );
+      final error = _handleResponseError(dioError.response);
+      //? _handleResponseError can return [null] if status code is 200
+      return RequestFailed(error: error ?? unknownError);
     }
   }
 }

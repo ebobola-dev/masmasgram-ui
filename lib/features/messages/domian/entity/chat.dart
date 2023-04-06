@@ -1,6 +1,6 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:masmasgram_ui/features/messages/domian/entity/message.dart';
-import 'package:masmasgram_ui/features/user/domian/entity/user.dart';
+import 'package:masmasgram_ui/features/user/domian/entity/user/user.dart';
 
 part 'chat.freezed.dart';
 part 'chat.g.dart';

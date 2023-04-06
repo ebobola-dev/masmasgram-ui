@@ -12,7 +12,7 @@ class User with _$User {
     required final String username,
     final String? fullname,
     required final bool isOnline,
-    required final int postCount,
+    required final int postsCount,
     required final int followersCount,
     required final int followsCount,
   }) = _User;

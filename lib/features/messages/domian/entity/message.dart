@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:masmasgram_ui/features/user/domian/entity/user.dart';
+import 'package:masmasgram_ui/features/user/domian/entity/user/user.dart';
 
 part 'message.freezed.dart';
 part 'message.g.dart';

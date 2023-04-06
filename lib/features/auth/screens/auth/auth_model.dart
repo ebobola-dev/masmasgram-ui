@@ -3,9 +3,9 @@ import 'dart:developer';
 
 import 'package:elementary/elementary.dart';
 import 'package:masmasgram_ui/features/auth/domian/entity/auth_mode.dart';
-import 'package:masmasgram_ui/features/auth/domian/repositoties/auth_repository.dart';
-import 'package:masmasgram_ui/features/common/domian/entity/login_request/login_request_result.dart';
-import 'package:masmasgram_ui/features/common/domian/entity/registation_request/registation_request_result.dart';
+import 'package:masmasgram_ui/features/auth/domian/entity/login_result/login_result.dart';
+import 'package:masmasgram_ui/features/common/domian/entity/request_result/request_result.dart';
+import 'package:masmasgram_ui/features/common/domian/repositories/auth_repository.dart';
 import 'package:masmasgram_ui/features/common/domian/repositories/models_settings.dart';
 import 'package:masmasgram_ui/features/common/domian/repositories/secure_storage.dart';
 
@@ -13,7 +13,6 @@ class AuthModel extends ElementaryModel {
   final ModelsSettingsRepository _modelsSettingsRepo;
   final AuthRepository _authRepository;
   final SecureStorageRepository _secureStorageRepository;
-  String? _token;
   AuthMode _currentAuthMode = AuthMode.signUp;
 
   AuthModel({
@@ -40,7 +39,7 @@ class AuthModel extends ElementaryModel {
     return _currentAuthMode;
   }
 
-  Future<RegistrationRequestResult> registration({
+  Future<RequestResult> registration({
     required String username,
     required String password,
     required String fullname,
@@ -52,7 +51,7 @@ class AuthModel extends ElementaryModel {
     );
   }
 
-  Future<LoginRequestResult> login({
+  Future<RequestResult> login({
     required String username,
     required String password,
   }) async {
@@ -60,12 +59,12 @@ class AuthModel extends ElementaryModel {
       username: username,
       password: password,
     );
-    if (loginResult is SuccessfullyLoggedIn) {
+    if (loginResult is SuccessfullRequest<LoginResult>) {
       log(
-        'Successfully logged in, token -> ${loginResult.token}',
+        'Successfully logged in, token -> ${loginResult.data.token}',
         name: 'AuthModel | login',
       );
-      _secureStorageRepository.writeToken(loginResult.token);
+      _secureStorageRepository.writeToken(loginResult.data.token);
     }
     return loginResult;
   }
